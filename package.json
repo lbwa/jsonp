@@ -1,0 +1,27 @@
+{
+  "name": "jsonp",
+  "version": "0.1.0",
+  "description": "A simple JSONP implementation",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbwa/jsonp.git"
+  },
+  "keywords": [
+    "jsonp",
+    "front-end",
+    "cross-domain-solution"
+  ],
+  "author": "Bowen (lbwa)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lbwa/jsonp/issues"
+  },
+  "homepage": "https://github.com/lbwa/jsonp#readme",
+  "devDependencies": {
+    "signale": "^1.2.0"
+  }
+}
