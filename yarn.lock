@@ -2,13 +2,46 @@
 # yarn lockfile v1
 
 
+"@babel/code-frame@^7.0.0-beta.47":
+  version "7.0.0-beta.51"
+  resolved "http://registry.npm.taobao.org/@babel/code-frame/download/@babel/code-frame-7.0.0-beta.51.tgz#bd71d9b192af978df915829d39d4094456439a0c"
+  dependencies:
+    "@babel/highlight" "7.0.0-beta.51"
+
+"@babel/highlight@7.0.0-beta.51":
+  version "7.0.0-beta.51"
+  resolved "http://registry.npm.taobao.org/@babel/highlight/download/@babel/highlight-7.0.0-beta.51.tgz#e8844ae25a1595ccfd42b89623b4376ca06d225d"
+  dependencies:
+    chalk "^2.0.0"
+    esutils "^2.0.2"
+    js-tokens "^3.0.0"
+
+"@types/estree@0.0.39":
+  version "0.0.39"
+  resolved "http://registry.npm.taobao.org/@types/estree/download/@types/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
+
+"@types/node@*":
+  version "10.3.3"
+  resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-10.3.3.tgz#8798d9e39af2fa604f715ee6a6b19796528e46c3"
+
 ansi-styles@^3.2.1:
   version "3.2.1"
   resolved "http://registry.npm.taobao.org/ansi-styles/download/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
   dependencies:
     color-convert "^1.9.0"
 
-chalk@^2.3.2:
+balanced-match@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/balanced-match/download/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
+
+brace-expansion@^1.1.7:
+  version "1.1.11"
+  resolved "http://registry.npm.taobao.org/brace-expansion/download/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
+  dependencies:
+    balanced-match "^1.0.0"
+    concat-map "0.0.1"
+
+chalk@^2.0.0, chalk@^2.3.2:
   version "2.4.1"
   resolved "http://registry.npm.taobao.org/chalk/download/chalk-2.4.1.tgz#18c49ab16a037b6eb0152cc83e3471338215b66e"
   dependencies:
@@ -26,6 +59,14 @@ color-name@1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/color-name/download/color-name-1.1.1.tgz#4b1415304cf50028ea81643643bd82ea05803689"
 
+commander@~2.14.1:
+  version "2.14.1"
+  resolved "http://registry.npm.taobao.org/commander/download/commander-2.14.1.tgz#2235123e37af8ca3c65df45b026dbd357b01b9aa"
+
+concat-map@0.0.1:
+  version "0.0.1"
+  resolved "http://registry.npm.taobao.org/concat-map/download/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
+
 error-ex@^1.3.1:
   version "1.3.1"
   resolved "http://registry.npm.taobao.org/error-ex/download/error-ex-1.3.1.tgz#f855a86ce61adc4e8621c3cda21e7a7612c3a8dc"
@@ -35,6 +76,14 @@ error-ex@^1.3.1:
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "http://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
+
+estree-walker@^0.2.1:
+  version "0.2.1"
+  resolved "http://registry.npm.taobao.org/estree-walker/download/estree-walker-0.2.1.tgz#bdafe8095383d8414d5dc2ecf4c9173b6db9412e"
+
+esutils@^2.0.2:
+  version "2.0.2"
+  resolved "http://registry.npm.taobao.org/esutils/download/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
 
 figures@^2.0.0:
   version "2.0.0"
@@ -60,6 +109,10 @@ is-arrayish@^0.2.1:
   version "0.2.1"
   resolved "http://registry.npm.taobao.org/is-arrayish/download/is-arrayish-0.2.1.tgz#77c99840527aa8ecb1a8ba697b80645a7a926a9d"
 
+js-tokens@^3.0.0:
+  version "3.0.2"
+  resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
+
 json-parse-better-errors@^1.0.1:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/json-parse-better-errors/download/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -79,6 +132,12 @@ locate-path@^2.0.0:
   dependencies:
     p-locate "^2.0.0"
     path-exists "^3.0.0"
+
+minimatch@^3.0.2:
+  version "3.0.4"
+  resolved "http://registry.npm.taobao.org/minimatch/download/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
+  dependencies:
+    brace-expansion "^1.1.7"
 
 p-limit@^1.1.0:
   version "1.3.0"
@@ -118,6 +177,39 @@ pkg-conf@^2.1.0:
     find-up "^2.0.0"
     load-json-file "^4.0.0"
 
+rollup-plugin-alias@^1.4.0:
+  version "1.4.0"
+  resolved "http://registry.npm.taobao.org/rollup-plugin-alias/download/rollup-plugin-alias-1.4.0.tgz#120cba7c46621c03138f0ca6fd5dd2ade9872db9"
+  dependencies:
+    slash "^1.0.0"
+
+rollup-plugin-babel@^3.0.4:
+  version "3.0.4"
+  resolved "http://registry.npm.taobao.org/rollup-plugin-babel/download/rollup-plugin-babel-3.0.4.tgz#41b3e762fe64450dd61da3105a2cf7ad76be4edc"
+  dependencies:
+    rollup-pluginutils "^1.5.0"
+
+rollup-plugin-terser@^1.0.1:
+  version "1.0.1"
+  resolved "http://registry.npm.taobao.org/rollup-plugin-terser/download/rollup-plugin-terser-1.0.1.tgz#ba5f497cbc9aa38ba19d3ee2167c04ea3ed279af"
+  dependencies:
+    "@babel/code-frame" "^7.0.0-beta.47"
+    terser "^3.7.5"
+
+rollup-pluginutils@^1.5.0:
+  version "1.5.2"
+  resolved "http://registry.npm.taobao.org/rollup-pluginutils/download/rollup-pluginutils-1.5.2.tgz#1e156e778f94b7255bfa1b3d0178be8f5c552408"
+  dependencies:
+    estree-walker "^0.2.1"
+    minimatch "^3.0.2"
+
+rollup@^0.60.7:
+  version "0.60.7"
+  resolved "http://registry.npm.taobao.org/rollup/download/rollup-0.60.7.tgz#2b62ef9306f719b1ab85a7814b3e6596ac51fae8"
+  dependencies:
+    "@types/estree" "0.0.39"
+    "@types/node" "*"
+
 signale@^1.2.0:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/signale/download/signale-1.2.0.tgz#b7803f53567f0c4ad65cde71511afe18d1dd0a87"
@@ -125,6 +217,14 @@ signale@^1.2.0:
     chalk "^2.3.2"
     figures "^2.0.0"
     pkg-conf "^2.1.0"
+
+slash@^1.0.0:
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/slash/download/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
+
+source-map@~0.6.1:
+  version "0.6.1"
+  resolved "http://registry.npm.taobao.org/source-map/download/source-map-0.6.1.tgz#74722af32e9614e9c287a8d0bbde48b5e2f1a263"
 
 strip-bom@^3.0.0:
   version "3.0.0"
@@ -135,3 +235,10 @@ supports-color@^5.3.0:
   resolved "http://registry.npm.taobao.org/supports-color/download/supports-color-5.4.0.tgz#1c6b337402c2137605efe19f10fec390f6faab54"
   dependencies:
     has-flag "^3.0.0"
+
+terser@^3.7.5:
+  version "3.7.6"
+  resolved "http://registry.npm.taobao.org/terser/download/terser-3.7.6.tgz#0b3c609f22278c089780ac1cdc63627071e3b96a"
+  dependencies:
+    commander "~2.14.1"
+    source-map "~0.6.1"
