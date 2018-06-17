@@ -5,55 +5,77 @@ class JSONP {
 
     this.initState(options, callback)
 
-    this.insertToElement(url)
+    this.encodeURL(url)
+
+    this.insertToElement(this._url)
+  }
+
+  encodeURL (url) {
+    // name of query parameter to specify the callback name
+    // eg. ?callback=...
+    const params = this._options.params || 'jsonpCallback'
+    const id = encodeURIComponent(this._id)
+    url += `${url.indexOf('?') < 0 ? '?' : '&'}${params}=${id}`
+
+    //  TODO: add other parameter to url excluding callback parameter
+
+    this._url = url
+  }
+
+  checkOptions (options, callback) {
+    if (typeof options === 'function' && typeof callback === 'object') {
+      [callback, options] = [options, callback]
+    }
+
+    this._options = options ? options : {}
   }
 
   initState (options, callback) {
-    const timeout = options.timeout || 6000
-    const prefix = options.prefix || 'jsonpCallback'
-    // const id = prefix + Data.now()
-    const id = prefix
+    defineEnumerable(this, '_timer', null)
+    defineEnumerable(this, '_url', null)
+    defineEnumerable(this, '_id', null)
+    defineEnumerable(this, '_insertScript', null)
+    defineEnumerable(this, '_target', null)
 
-    // callback in global env
-    window[id] = (data) => {
-      // 当返回数据，即 window[id] 被执行时，那么清除超时倒计时
+    // period of request without timeout error
+    const timeout = options.timeout || 6000
+
+    // prefix for callback name in global env
+    const prefix = options.prefix || 'jsonpCallback'
+
+    // unique global callback name in global env
+    this._id = prefix + Date.now()
+
+    window[this._id] = (data) => {
+      // Once invoked window[this._id],clean timer for limiting request period
       this.cleanScript()
       callback(data)
     }
 
-    defineEnumerable(this, '_timer', null)
-    defineEnumerable(this, '_script', null)
-    defineEnumerable(this, '_target', null)
-
+    // timer is used to limit request period
     if (timeout) {
       this._timer = setTimeout(() => {
-        window[id] = noop
+        window[this._id] = noop
         this._timer = null
         this.cleanScript()
+        throw new Error('JSONP request unsuccessfully (eg. timeout).')
       }, timeout)
-    }
-  }
-
-  checkOptions (options, callback) {
-    if (typeof options !== 'object' || typeof callback !== 'function') {
-      throw new Error('Wrong options or callback')
     }
   }
 
   insertToElement (url) {
     this._target = document.getElementsByTagName('script')[0] || document.body.lastElementChild
 
-    this._script = document.createElement('script')
-    this._script.src = url
+    this._insertScript = document.createElement('script')
+    this._insertScript.src = url
 
-    this._target.parentNode.insertBefore(this._script, this._target)
+    this._target.parentNode.insertBefore(this._insertScript, this._target)
   }
 
   cleanScript () {
-    console.log('cleanScript running')
-    if (this._script.parentNode) {
-      this._target.parentNode.removeChild(this._script)
-      this._script = null
+    if (this._insertScript.parentNode) {
+      this._target.parentNode.removeChild(this._insertScript)
+      this._insertScript = null
     }
 
     if (this._timer) clearTimeout(this._timer)
