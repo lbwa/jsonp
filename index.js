@@ -1,4 +1,4 @@
-import { noop, defineEnumerable, euc } from './utils'
+import { noop, defineEnumerable, euc } from './utils/index.js'
 
 export default class JSONP {
   constructor (options) {
