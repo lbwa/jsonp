@@ -1,18 +1,34 @@
+import { noop, defineEnumerable } from './utils'
 class JSONP {
   constructor (url, options, callback) {
     this.checkOptions(options, callback)
 
-    this.insert(url)
+    this.initState(options, callback)
 
-    this.cleaner()
+    this.insertToElement(url)
+
+    // if (timeout) {
+    //   this._timer = setTimeout(() => {
+        // window[id] = noop
+    //     this._timer = null
+    //     this.cleanScript()
+    //   }, timeout)
+    // }
   }
 
-  defineProperty (target, key, value) {
-    Reflect.defineProperty(target, key, {
-      enumerable: false,
-      writable: true,
-      value
-    })
+  initState (options, callback) {
+    // const timeout = options.timeout || 6000
+    const prefix = options.prefix || 'jsonpCallback'
+    // const id = prefix + Data.now()
+    const id = prefix
+    window[id] = (data) => {
+      this.cleanScript()
+      callback(data)
+    }
+
+    defineEnumerable(this, '_timer', null)
+    defineEnumerable(this, '_script', null)
+    defineEnumerable(this, '_target', null)
   }
 
   checkOptions (options, callback) {
@@ -21,18 +37,17 @@ class JSONP {
     }
   }
 
-  insert (url) {
-    const target = document.getElementsByTagName('script')[0] || document.body.lastElementChild
-    this.defineProperty(this, '_target', target)
-    
-    const script = document.createElement('script')
-    script.src = url
-    this.defineProperty(this, '_script', script)
+  insertToElement (url) {
+    this._target = document.getElementsByTagName('script')[0] || document.body.lastElementChild
 
-    target.parentNode.insertBefore(script, target)
+    this._script = document.createElement('script')
+    this._script.src = url
+
+    this._target.parentNode.insertBefore(this._script, this._target)
   }
 
-  cleaner () {
+  cleanScript () {
+    console.log('cleanScript running')
     this._target.parentNode.removeChild(this._script)
     this._script = null
   }
