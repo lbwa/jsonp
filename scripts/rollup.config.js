@@ -22,12 +22,17 @@ export default {
     banner
   },
   plugins: [
-    alias(),
+    // define aliases and extension which should be resolved
+    alias({
+      utils: resolve('utils') // url alias, eg. utils -> ../utils
+    }),
+    // minify
     terser({
       output: {
         comments: /^!/
       }
     }),
+    // convert to lower ES version
     babel({
       exclude: 'node_modules/**'
     })
