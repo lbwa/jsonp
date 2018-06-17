@@ -12,7 +12,13 @@
   <script type="module">
     import JSONP from './index.js'
     const url = 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg'
-    const jsonp = new JSONP(url, {}, function (data) {
+    const jsonp = new JSONP(url, {
+      callbackParams: 'jsonpCallback',
+      urlParams: {
+        platform: 'yqq',
+        needNewCode: 0
+      }
+    }, function (data) {
       console.log(data)
     })
     console.log('jsonp :', jsonp)
