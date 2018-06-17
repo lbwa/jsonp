@@ -1,12 +1,12 @@
 import { noop, defineEnumerable, euc } from './utils'
 
-class JSONP {
-  constructor (url, options, callback) {
-    this.checkOptions(options, callback)
+export default class JSONP {
+  constructor (options) {
+    this.checkOptions(options)
 
-    this.initState(options, callback)
+    this.initState(options)
 
-    this.encodeURL(url)
+    this.encodeURL(this._options.url)
 
     this.insertToElement(this._url)
 
@@ -14,15 +14,14 @@ class JSONP {
     // JSONP from HTML
   }
 
-  checkOptions (options, callback) {
-    if (typeof options === 'function' && typeof callback === 'object') {
-      [callback, options] = [options, callback]
-    }
+  checkOptions (options) {
+    if (!options.url) throw new Error('Please check your request url.')
+    if (!options.callback) throw new Error('Please check your callback parameter.')
 
-    this._options = options ? options : {}
+    this._options = options
   }
 
-  initState (options, callback) {
+  initState (options) {
     defineEnumerable(this, '_timer', null)
     defineEnumerable(this, '_url', null)
     defineEnumerable(this, '_id', null)
@@ -32,20 +31,29 @@ class JSONP {
     // period of request without timeout error
     const timeout = options.timeout || 6000
 
-    // prefix for callback name in global env
-    const prefix = options.prefix || 'jsonpCallback'
+    if (options.callbackName) {
+      this._id = options.callbackName
+      defineEnumerable(this, '_callbackName', this._id)
+    } else {
+      // prefix for callback name in global env
+      const prefix = options.prefix || 'callback'
 
-    // unique global callback name in global env
-    this._id = prefix + Date.now()
-
-    // Once invoked window[this._id], it will clean timer for limiting request
-    // period and script element which is used to JSONP
-    window[this._id] = (data) => {
-      this.cleanScript()
-      callback(data)
+      // unique global callback name in global env
+      this._id = prefix + Date.now()
     }
 
-    // timer is used to limit request period
+    /**
+     * 1. Once invoked window[this._id], it will clean timer for limiting
+     *    request period and script element which is used to JSONP.
+     * 2. use arrow function to define `this` object value.
+     */
+    window[this._id] = (data) => {
+      this.cleanScript()
+      this._options.callback(data)
+    }
+
+    // timer is used to limit request period.
+    // use arrow function to define `this` object value.
     if (timeout) {
       this._timer = setTimeout(() => {
         window[this._id] = noop
@@ -80,6 +88,7 @@ class JSONP {
     this._insertScript = document.createElement('script')
     this._insertScript.src = url
 
+    // activate JSONP
     this._target.parentNode.insertBefore(this._insertScript, this._target)
   }
 
@@ -92,5 +101,3 @@ class JSONP {
     if (this._timer) clearTimeout(this._timer)
   }
 }
-
-export default JSONP
