@@ -11,7 +11,9 @@
   <script type="module" src="/index.js"></script>
   <script type="module">
     import JSONP from './index.js'
-    const jsonp = new JSONP('/data.js', {}, function () {})
+    const jsonp = new JSONP('/data.js', {}, function (data) {
+      console.log(data)
+    })
     console.log('jsonp :', jsonp)
   </script>
 </body>
