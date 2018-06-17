@@ -7,3 +7,7 @@ export function defineEnumerable (target, key, value) {
     value
   })
 }
+
+export function euc (value) {
+  return encodeURIComponent(value)
+}

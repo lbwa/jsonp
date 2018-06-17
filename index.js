@@ -1,4 +1,5 @@
-import { noop, defineEnumerable } from './utils'
+import { noop, defineEnumerable, euc } from './utils'
+
 class JSONP {
   constructor (url, options, callback) {
     this.checkOptions(options, callback)
@@ -8,18 +9,9 @@ class JSONP {
     this.encodeURL(url)
 
     this.insertToElement(this._url)
-  }
 
-  encodeURL (url) {
-    // name of query parameter to specify the callback name
-    // eg. ?callback=...
-    const params = this._options.params || 'jsonpCallback'
-    const id = encodeURIComponent(this._id)
-    url += `${url.indexOf('?') < 0 ? '?' : '&'}${params}=${id}`
-
-    //  TODO: add other parameter to url excluding callback parameter
-
-    this._url = url
+    // Once invoked window[this._id], it will clean script which is used to
+    // JSONP from HTML
   }
 
   checkOptions (options, callback) {
@@ -46,8 +38,9 @@ class JSONP {
     // unique global callback name in global env
     this._id = prefix + Date.now()
 
+    // Once invoked window[this._id], it will clean timer for limiting request
+    // period and script element which is used to JSONP
     window[this._id] = (data) => {
-      // Once invoked window[this._id],clean timer for limiting request period
       this.cleanScript()
       callback(data)
     }
@@ -58,9 +51,27 @@ class JSONP {
         window[this._id] = noop
         this._timer = null
         this.cleanScript()
-        throw new Error('JSONP request unsuccessfully (eg. timeout).')
+        throw new Error('JSONP request unsuccessfully (eg.timeout or wrong url).')
       }, timeout)
     }
+  }
+
+  encodeURL (url) {
+    // name of query parameter to specify the callback name
+    // eg. ?callback=...
+    const callbackParams = this._options.callbackParams || 'jsonpCallback'
+    const id = euc(this._id)
+    url += `${url.indexOf('?') < 0 ? '?' : '&'}${callbackParams}=${id}`
+
+    //  add other parameter to url excluding callback parameter
+    const params = this._options.urlParams || {}
+    const keys = Object.keys(params)
+    keys.forEach(key => {
+      const value = params[key] !== undefined ? params[key] : ''
+      url += `&${key}=${euc(value)}`
+    })
+
+    this._url = url
   }
 
   insertToElement (url) {
