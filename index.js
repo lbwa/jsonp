@@ -98,6 +98,8 @@ export default class JSONP {
       this._insertScript = null
     }
 
+    window[this._id] = noop
+
     if (this._timer) clearTimeout(this._timer)
   }
 }
