@@ -1,5 +1,12 @@
 # JSONP
 
+
+
+[![npm](https://img.shields.io/npm/v/better-jsonp.svg)](https://www.npmjs.com/package/better-jsonp)
+
+
+[![NPM](https://nodei.co/npm/better-jsonp.png?mini=true)](https://nodei.co/npm/better-jsonp/)
+
 A minimal JSONP implementation which is used to be a kind of cross domain solution.
 
 ## Usage
