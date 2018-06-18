@@ -11,7 +11,7 @@ read -p "升级版本号:
 yarn run build
 
 # only works for yarn v1.7.0+
-# It will also tag in git
+# It will run `git tag -a v1.0.0 -m 'info'` at same time
 yarn version --$var
 
 # CURRENT_VERSION=`cat package.json | grep version | sed -E 's/[^.0-9]//g'`
