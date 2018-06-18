@@ -87,5 +87,5 @@ function genConfig (name) {
   return config
 }
 
-// rollup -c scripts/rollup.config.js --environment TARGET:production
+// start from rollup -c scripts/rollup.config.js --environment TARGET:production
 module.exports = genConfig(process.env.TARGET)

@@ -1,16 +1,17 @@
 const http = require('http')
 const fs = require('fs')
 const zlib = require('zlib')
-const debug = require('signale')
+const chalk = require('chalk')
 
+const log = console.log
 const PORT = 8899
 
 const server = http.createServer((request, response) => {
-  debug.success(`Request url is ${request.url}`)
+  log(chalk.yellow(`Request url is ${request.url}`))
 
   // 以运行 node samples/server.js 的路径为基路径，而不是 server.js 所在路径
   const html = fs.readFileSync('samples/test-page.html')
-  const jsonp = fs.readFileSync('dist/better-jsonp.common.js')
+  const jsonp = fs.readFileSync('dist/better-jsonp.js')
   const utils = fs.readFileSync('lib/utils/index.js')
 
   switch (request.url) {
@@ -66,4 +67,4 @@ const server = http.createServer((request, response) => {
 
 server.listen(PORT)
 
-debug.watch(`Server listening at port ${PORT}`)
+log(chalk.redBright(`Server listening at port ${PORT}`))
