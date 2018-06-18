@@ -2,8 +2,6 @@
 
 set -e
 
-# 实现方法 1
-
 read -p "升级版本号:
 1. [patch] 修复了 BUG，并向下兼容
 2. [minor] 添加了一些新功能，并向下兼容
@@ -11,7 +9,6 @@ read -p "升级版本号:
 请选择升级版本号的方式：" var
 
 yarn run build
-yarn run build:dev
 
 # only works for yarn v1.7.0+
 # It will also tag in git
@@ -24,10 +21,17 @@ yarn publish --new-version $CURRENT_VERSION
 
 git push --tag
 
-read -p "请输入提交至 Git 仓库的提交描述信息：" message
+read -p "请输入提交至 Git 仓库的 commit 描述信息：" message
 
 git add .
 git commit -m "$message"
+
+if [ ! -n "$message" ]
+then
+  echo "请输入正确的 commit 描述信息！"
+  exit 2
+fi
+
 git push origin master
 
-echo ' -- Mission completed !! -- '
+echo ' ----- Mission completed ----- '

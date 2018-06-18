@@ -15,17 +15,21 @@ const banner =
 const resolve = p => path.resolve(__dirname, '../', p)
 
 const builds = {
+  // be used to link with <script>
   'development': {
     entry: resolve('lib/index.js'),
     dest: resolve('dist/better-jsonp.js'),
     format: 'umd',
+    env: 'development',
     banner,
     plugins: []
   },
+  // be used to link with <script>
   'production': {
     entry: resolve('lib/index.js'),
     dest: resolve('dist/better-jsonp.min.js'),
     format: 'umd',
+    env: 'production',
     banner,
     plugins: [
       terser({
@@ -34,11 +38,19 @@ const builds = {
         }
       })
     ]
+  },
+  // be used to CommonJS (node, webpack.etc)
+  'cjs': {
+    entry: resolve('lib/index.js'),
+    dest: resolve('dist/better-jsonp.common.js'),
+    format: 'cjs',
+    banner,
+    plugins: []
   }
 }
 
-function genConfig (env) {
-  const options = builds[env]
+function genConfig (name) {
+  const options = builds[name]
   const config = {
     input: options.entry,
     output: {
@@ -54,11 +66,6 @@ function genConfig (env) {
       alias({
         utils: resolve('lib/utils') // url alias, eg. utils -> ../utils
       }),
-      // rollup-plugin-replace, be used to inject environment variable to output
-      replace({
-        exclude: 'node_modules/**',
-        ENVIRONMENT: JSON.stringify(process.env.NODE_ENV)
-      }),
       // convert to lower ES version
       babel({
         exclude: 'node_modules/**'
@@ -67,8 +74,18 @@ function genConfig (env) {
     ],
   }
 
+  if (options.env) {
+    config.plugins.push(
+      // rollup-plugin-replace, be used to inject environment variable to output
+      replace({
+        exclude: 'node_modules/**',
+        ENVIRONMENT: JSON.stringify(options.env)
+      }),
+    )
+  }
+
   return config
 }
 
-// rollup -c scripts/rollup.config.js --environment NODE_ENV:production
-module.exports = genConfig(process.env.NODE_ENV)
+// rollup -c scripts/rollup.config.js --environment TARGET:production
+module.exports = genConfig(process.env.TARGET)

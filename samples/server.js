@@ -10,7 +10,7 @@ const server = http.createServer((request, response) => {
 
   // 以运行 node samples/server.js 的路径为基路径，而不是 server.js 所在路径
   const html = fs.readFileSync('samples/test-page.html')
-  const jsonp = fs.readFileSync('dist/better-jsonp.js')
+  const jsonp = fs.readFileSync('dist/better-jsonp.common.js')
   const utils = fs.readFileSync('lib/utils/index.js')
 
   switch (request.url) {
