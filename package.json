@@ -1,0 +1,48 @@
+{
+  "name": "better-jsonp",
+  "version": "0.2.16",
+  "description": "A simple JSONP implementation",
+  "main": "dist/better-jsonp.common.js",
+  "unpkg": "dist/better-jsonp.js",
+  "jsdelivr": "dist/better-jsonp.js",
+  "files": [
+    "lib",
+    "dist/*.js"
+  ],
+  "scripts": {
+    "dev": "node samples/server.js",
+    "build": "yarn run build:prod && yarn run build:dev && yarn run build:common",
+    "build:prod": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:production",
+    "build:dev": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:development",
+    "build:common": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:cjs",
+    "release": "sh publish.sh",
+    "cleaner": "rm -v dist/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbwa/jsonp.git"
+  },
+  "keywords": [
+    "jsonp",
+    "fetch",
+    "front-end",
+    "cross-domain-solution"
+  ],
+  "author": "Bowen (lbwa)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lbwa/jsonp/issues"
+  },
+  "homepage": "https://github.com/lbwa/jsonp#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-env": "^1.7.0",
+    "chalk": "^2.4.1",
+    "rollup": "^0.60.7",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-terser": "^1.0.1"
+  }
+}
