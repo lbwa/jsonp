@@ -13,7 +13,7 @@ npm i better-jsonp
 ## Usage
 
 ```js
-import JSONP from 'jsonp'
+import JSONP from 'better-jsonp'
 
 const jsonp = new JSONP({
   url: 'http://localhost',
