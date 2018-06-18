@@ -2,14 +2,21 @@
 
 [![npm](https://img.shields.io/npm/v/better-jsonp.svg)](https://www.npmjs.com/package/better-jsonp)
 
-[![NPM](https://nodei.co/npm/better-jsonp.png?mini=true)](https://www.npmjs.com/package/better-jsonp/)
-
 A minimal JSONP implementation which is used to be a kind of cross domain solution.
+
+## Install
+
+```bash
+npm i better-jsonp
+
+# yarn add better-jsonp
+```
 
 ## Usage
 
 ```js
 import JSONP from 'jsonp'
+
 const jsonp = new JSONP({
   url: 'http://localhost',
   prefix: 'customName',
