@@ -1,6 +1,6 @@
 {
   "name": "better-jsonp",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A simple JSONP implementation",
   "main": "dist/better-jsonp.min.js",
   "files": [
