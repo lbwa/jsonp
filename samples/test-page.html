@@ -8,9 +8,8 @@
 </head>
 <body>
   <p>This page is used to test.</p>
-  <script type="module" src="/index.js"></script>
-  <script type="module">
-    import JSONP from './index.js'
+  <script src="/index.js"></script>
+  <script>
     const url = 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg'
     const jsonp = new JSONP({
       url,

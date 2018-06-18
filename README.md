@@ -1,11 +1,8 @@
 # JSONP
 
-
-
 [![npm](https://img.shields.io/npm/v/better-jsonp.svg)](https://www.npmjs.com/package/better-jsonp)
 
-
-[![NPM](https://nodei.co/npm/better-jsonp.png?mini=true)](https://nodei.co/npm/better-jsonp/)
+[![NPM](https://nodei.co/npm/better-jsonp.png?mini=true)](https://www.npmjs.com/package/better-jsonp/)
 
 A minimal JSONP implementation which is used to be a kind of cross domain solution.
 
@@ -16,11 +13,13 @@ import JSONP from 'jsonp'
 const jsonp = new JSONP({
   url: 'http://localhost',
   prefix: 'customName',
-  timeout: 5000
+  timeout: 5000,
+  // eg. ?customCallbackParams=...
   callbackParams: 'customCallbackParams',
   urlParams: {
-    key0: 1,
-    key2: 2
+    // eg. ?key0=0&key1=1...
+    key0: 0,
+    key1: 1
     // ...
   },
   callback: data => console.log(data)
