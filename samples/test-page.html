@@ -7,21 +7,35 @@
   <title>test page</title>
 </head>
 <body>
-  <p>This page is used to test.</p>
+  <h1>This page is used to test.</h1>
+  <button class="btn">Activate JSONP request</button>
   <script src="/index.js"></script>
   <script>
+    const body = document.body
     const url = 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg'
-    const jsonp = new JSONP({
-      url,
-      callbackName: 'jp',
-      callbackParams: 'jsonpCallback',
-      urlParams: {
-        platform: 'yqq',
-        needNewCode: 0
-      },
-      callback: data => console.log(data)
+
+    function fn (data) {
+
+      console.log('data :', data)
+
+      const target = document.createElement('p')
+      target.innerText = JSON.stringify(data)
+      body.insertBefore(target, body.lastElementChild)
+    }
+
+    document.getElementsByClassName('btn')[0].addEventListener('click', () => {
+      const jsonp = new JSONP({
+        url,
+        callbackName: 'jp',
+        callbackParams: 'jsonpCallback',
+        urlParams: {
+          platform: 'yqq',
+          needNewCode: 0
+        },
+        callback: fn
+      })
+      console.log('jsonp instance: ', jsonp)
     })
-    console.log('jsonp :', jsonp)
   </script>
 </body>
 </html>
