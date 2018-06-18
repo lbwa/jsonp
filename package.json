@@ -1,17 +1,22 @@
 {
   "name": "better-jsonp",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "A simple JSONP implementation",
-  "main": "dist/better-jsonp.min.js",
+  "main": "dist/better-jsonp.esm.js",
+  "unpkg": "dist/better-jsonp.js",
+  "jsdelivr": "dist/better-jsonp.js",
   "files": [
     "lib",
     "dist/*.js"
   ],
   "scripts": {
     "dev": "node samples/server.js",
-    "build": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment NODE_ENV:production",
-    "build:dev": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment NODE_ENV:development",
-    "release": "sh publish.sh"
+    "build": "yarn run build:prod && yarn run build:dev && yarn run build:common",
+    "build:prod": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:production",
+    "build:dev": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:development",
+    "build:common": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:cjs",
+    "release": "sh publish.sh",
+    "cleaner": "rm -v dist/*.js"
   },
   "repository": {
     "type": "git",
