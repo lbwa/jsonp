@@ -22,31 +22,31 @@ const server = http.createServer((request, response) => {
       })
       response.end(zlib.gzipSync(html))
       break
-    
+
     case '/index.js':
-    response.writeHead(200, {
-      'Content-Type': 'application/javascript',
-      'Content-Encoding': 'gzip'
-    })
-    response.end(zlib.gzipSync(jsonp))
-    break
+      response.writeHead(200, {
+        'Content-Type': 'application/javascript',
+        'Content-Encoding': 'gzip'
+      })
+      response.end(zlib.gzipSync(jsonp))
+      break
 
     case '/utils/index.js':
-    response.writeHead(200, {
-      'Content-Type': 'application/javascript',
-      'Content-Encoding': 'gzip'
-    })
-    response.end(zlib.gzipSync(utils))
-    break
+      response.writeHead(200, {
+        'Content-Type': 'application/javascript',
+        'Content-Encoding': 'gzip'
+      })
+      response.end(zlib.gzipSync(utils))
+      break
 
     case '/utils':
-    response.writeHead(200, {
-      'Content-Type': 'application/javascript',
-      'Content-Encoding': 'gzip'
-    })
-    response.end(zlib.gzipSync(utils))
-    break
-    
+      response.writeHead(200, {
+        'Content-Type': 'application/javascript',
+        'Content-Encoding': 'gzip'
+      })
+      response.end(zlib.gzipSync(utils))
+      break
+
     case '/data.js':
       response.writeHead(200, {
         'Content-Type': 'application/javascript',
@@ -54,14 +54,14 @@ const server = http.createServer((request, response) => {
       })
       response.end(zlib.gzipSync('jsonpCallback({num: 1000})'))
       break
-  
+
     default:
       response.writeHead(404, {
         'Content-Type': 'text/html',
         'Content-Encoding': 'gzip'
       })
       response.end()
-      break;
+      break
   }
 })
 

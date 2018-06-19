@@ -1,11 +1,11 @@
 const path = require('path')
 const version = process.env.VERSION || require('../package.json').version
-const alias = require('rollup-plugin-alias')
+// const alias = require('rollup-plugin-alias')
 const babel = require('rollup-plugin-babel')
 const replace = require('rollup-plugin-replace')
 const { terser } = require('rollup-plugin-terser')
 
-const banner = 
+const banner =
   '/*!\n' +
   ' * better-jsonp v' + version + '\n' +
   ' * Copyrights (c) 2018-' + new Date().getFullYear() + ' Bowen (lbwa)\n' +
@@ -73,7 +73,7 @@ function genConfig (name) {
       }),
 
       ...options.plugins
-    ],
+    ]
   }
 
   if (options.env) {
@@ -82,7 +82,7 @@ function genConfig (name) {
       replace({
         exclude: 'node_modules/**',
         ENVIRONMENT: JSON.stringify(options.env)
-      }),
+      })
     )
   }
 

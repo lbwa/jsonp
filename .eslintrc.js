@@ -3,9 +3,10 @@
 module.exports = {
   // root: true 找寻配置的最高级目录，即当前目录
   root: true,
-  parserOptions: {
-    parser: 'babel-eslint'
-  },
+  // if you are using webpack
+  // parserOptions: {
+  //   parser: 'babel-eslint'
+  // },
   env: {
     browser: true,
   },
