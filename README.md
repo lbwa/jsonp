@@ -5,16 +5,21 @@ A minimal JSONP implementation which is used to be a kind of cross domain soluti
 ## Install
 
 ```bash
+# using npm
 npm i better-jsonp
-
-# yarn add better-jsonp
+```
+```bash
+# using yarn
+yarn add better-jsonp
+```
+```html
+<!-- using CDN -->
+<script src="https://cdn.jsdelivr.net/npm/better-jsonp"></script>
 ```
 
 ## Usage
 
 ```js
-import JSONP from 'better-jsonp'
-
 const jsonp = new JSONP({
   url: 'http://localhost',
   prefix: 'customName',

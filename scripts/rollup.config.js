@@ -63,13 +63,15 @@ function genConfig (name) {
     },
     plugins: [
       // define aliases and extension which should be resolved
-      alias({
-        utils: resolve('lib/utils') // url alias, eg. utils -> ../utils
-      }),
+      // alias({
+      //   utils: resolve('lib/utils') // url alias, eg. utils -> ../utils
+      // }),
+
       // convert to lower ES version
       babel({
         exclude: 'node_modules/**'
       }),
+
       ...options.plugins
     ],
   }

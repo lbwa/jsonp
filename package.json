@@ -11,13 +11,13 @@
   ],
   "scripts": {
     "dev": "node samples/server.js",
-    "build": "yarn run build:prod && yarn run build:dev && yarn run build:common",
+    "build": "yarn run cleaner && yarn run build:prod && yarn run build:dev && yarn run build:common",
     "build:prod": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:production",
     "build:dev": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:development",
     "build:common": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:cjs",
     "test": "echo 'Under construction'",
     "release": "sh publish.sh",
-    "cleaner": "rm -v dist/*.js"
+    "cleaner": "rm -vrf dist/*"
   },
   "repository": {
     "type": "git",

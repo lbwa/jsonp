@@ -7,11 +7,11 @@ const log = console.log
 const PORT = 8899
 
 const server = http.createServer((request, response) => {
-  log(chalk.yellow(`Request url is ${request.url}`))
+  log(chalk.yellow(`Request url is ${chalk.green(request.url)}`))
 
   // 以运行 node samples/server.js 的路径为基路径，而不是 server.js 所在路径
   const html = fs.readFileSync('samples/test-page.html')
-  const jsonp = fs.readFileSync('dist/better-jsonp.js')
+  const jsonp = fs.readFileSync('lib/index.js')
   const utils = fs.readFileSync('lib/utils/index.js')
 
   switch (request.url) {
@@ -67,4 +67,4 @@ const server = http.createServer((request, response) => {
 
 server.listen(PORT)
 
-log(chalk.redBright(`Server listening at port ${PORT}`))
+log(chalk.yellow(`Server listening at port ${chalk.green(PORT)}`))
