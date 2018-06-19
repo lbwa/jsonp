@@ -1,5 +1,7 @@
 # Summary
 
+[![JavaScript Style Guide - Standard Style](https://cdn.rawgit.com/standard/standard/master/badge.svg)](http://standardjs.com)
+
 本应用借鉴 `Vue.js` 的部分架构模式（`prototype pattern` + `constructor pattern`），以原型对象为基础创建多个实例。每个实例均有自己独有的属性表示自己独有的数据（如 `this._options`、`this._id`）。同时这些实例属性可用于原型方法之间的传值，避免了调用原型对象直接传参。
 
   - `prototype pattern` 用于多个实例共享原型方法。
