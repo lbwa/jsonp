@@ -11,8 +11,9 @@ const server = http.createServer((request, response) => {
 
   // 以运行 node samples/server.js 的路径为基路径，而不是 server.js 所在路径
   const html = fs.readFileSync('samples/test-page.html')
+  const jsonp = fs.readFileSync('lib/jsonp.js')
   const client = fs.readFileSync('samples/client.js')
-  const jsonp = fs.readFileSync('lib/index.js')
+  const core = fs.readFileSync('lib/core/Jsonp.js')
   const utils = fs.readFileSync('lib/utils/index.js')
 
   switch (request.url) {
@@ -24,6 +25,14 @@ const server = http.createServer((request, response) => {
       response.end(zlib.gzipSync(html))
       break
 
+    case '/jsonp.js':
+      response.writeHead(200, {
+        'Content-Type': 'application/javascript',
+        'Content-Encoding': 'gzip'
+      })
+      response.end(zlib.gzipSync(jsonp))
+      break
+
     case '/client.js':
       response.writeHead(200, {
         'Content-Type': 'application/javascript',
@@ -32,12 +41,12 @@ const server = http.createServer((request, response) => {
       response.end(zlib.gzipSync(client))
       break
 
-    case '/index.js':
+    case '/core/Jsonp':
       response.writeHead(200, {
         'Content-Type': 'application/javascript',
         'Content-Encoding': 'gzip'
       })
-      response.end(zlib.gzipSync(jsonp))
+      response.end(zlib.gzipSync(core))
       break
 
     case '/utils/index.js':
@@ -46,22 +55,6 @@ const server = http.createServer((request, response) => {
         'Content-Encoding': 'gzip'
       })
       response.end(zlib.gzipSync(utils))
-      break
-
-    case '/utils':
-      response.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync(utils))
-      break
-
-    case '/data.js':
-      response.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync('jsonpCallback({num: 1000})'))
       break
 
     default:
