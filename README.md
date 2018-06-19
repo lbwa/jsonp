@@ -2,6 +2,14 @@
 
 A minimal JSONP implementation which is used to be a kind of cross domain solution.
 
+## Features
+
+- Implement JSONP request from the browser
+
+- Support the [Promise] API
+
+[Promise]:https://promisesaplus.com/
+
 ## Install
 
 ```bash
@@ -20,9 +28,10 @@ yarn add better-jsonp
 ## Usage
 
 ```js
-const jsonp = new JSONP({
+jsonp({
   url: 'http://localhost',
-  prefix: 'customName',
+  // global function named `${jsonpCallback}` will invoked when JSONP response
+  jsonpCallback: 'jsonp',
   timeout: 5000,
   // eg. ?customCallbackParams=...
   callbackParams: 'customCallbackParams',
@@ -30,18 +39,16 @@ const jsonp = new JSONP({
     // eg. ?key0=0&key1=1...
     key0: 0,
     key1: 1
-    // ...
-  },
-  callback: data => console.log(data)
+  }
 })
+  .then(res => console.log(res))
+  .catch(err => console.error(err))
 ```
 
 | options parameter | type | required | description |
 | ----------------- | ---- | -------- | ----------- |
-|   `url`  | `String` |           true           | request url |
+|   `url`  | `String` |           true           | JSONP request address |
 | `timeout` | `Number` | false, default : `6000` | how long after timeout error is emitted. `0` to disable |
-| `prefix` | `String` | false, default: `callback` | prefix of global callback function name which is used to handle JSONP response |
-| `jsonpCallback`  | `String` | false, default : `prefix` + `Date.now()` | global callback function name which is used to handle JSONP response |
+| `jsonpCallback`  | `String` | false, default : `'callback'+'Date.now()'` | global callback function name which is used to handle JSONP response. |
 | `callbackParams` | `String` | false, default: `jsonpCallback` | name of query parameter to specify the callback name |
 | `urlParams` |  `Object`  | false, default: `{}` | other parameters in query string parameters |
-|  `callback` | `Function` |          true        | This callback which is in global callback function will be invoked when JSONP response |

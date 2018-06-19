@@ -18,7 +18,8 @@
     "test": "echo 'Under construction'",
     "lint": "./node_modules/.bin/eslint --fix --ext .js lib/ samples/ scripts/",
     "release": "sh publish.sh",
-    "cleaner": "rm -vrf dist/*"
+    "cleaner": "rm -vrf dist/*",
+    "commit": "git-cz"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,8 @@
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.7.0",
     "chalk": "^2.4.1",
+    "commitizen": "^2.10.1",
+    "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-friendly-formatter": "^4.0.1",
@@ -52,5 +55,10 @@
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-terser": "^1.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
