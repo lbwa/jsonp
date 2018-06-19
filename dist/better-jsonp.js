@@ -6,7 +6,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global.JSONP = factory());
+  (global.Jsonp = factory());
 }(this, (function () { 'use strict';
 
   function noop() {}
@@ -47,9 +47,9 @@
     };
   }();
 
-  var JSONP = function () {
-    function JSONP(options) {
-      classCallCheck(this, JSONP);
+  var Jsonp = function () {
+    function Jsonp(options) {
+      classCallCheck(this, Jsonp);
 
       this.checkOptions(options);
 
@@ -63,7 +63,7 @@
       // JSONP from HTML
     }
 
-    createClass(JSONP, [{
+    createClass(Jsonp, [{
       key: 'checkOptions',
       value: function checkOptions(options) {
         if (!options.url) throw new Error('Please check your request url.');
@@ -160,9 +160,9 @@
         if (this._timer) clearTimeout(this._timer);
       }
     }]);
-    return JSONP;
+    return Jsonp;
   }();
 
-  return JSONP;
+  return Jsonp;
 
 })));

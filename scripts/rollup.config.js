@@ -59,7 +59,7 @@ function genConfig (name) {
       banner: options.banner,
 
       // module name in global env. eg. window.JSONP = function () {...}
-      name: options.moduleName || 'JSONP'
+      name: options.moduleName || 'Jsonp'
     },
     plugins: [
       // define aliases and extension which should be resolved
