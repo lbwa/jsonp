@@ -43,94 +43,110 @@ var createClass = function () {
   };
 }();
 
+var defaultOptions = {
+  timeout: 6000,
+  prefix: 'callback',
+  callbackParams: 'jsonpCallback',
+  urlParams: {}
+};
+
 var Jsonp = function () {
-  function Jsonp(options) {
+  function Jsonp() {
     classCallCheck(this, Jsonp);
-
-    this.checkOptions(options);
-
-    this.initState(options);
-
-    this.encodeURL(this._options.url);
-
-    this.insertToElement(this._url);
-
-    // Once invoked window[this._id], it will clean script which is used to
-    // JSONP from HTML
   }
 
   createClass(Jsonp, [{
     key: 'checkOptions',
     value: function checkOptions(options) {
       if (!options.url) throw new Error('Please check your request url.');
-      if (!options.callback) throw new Error('Please check your callback parameter.');
+      // if (!options.callback) throw new Error('Please check your callback parameter.')
 
-      this._options = options;
+      this.options = options;
+    }
+  }, {
+    key: 'generateJsonpCallback',
+    value: function generateJsonpCallback(options) {
+      if (options.jsonpCallback) {
+        this._jsonpCallback = options.jsonpCallback;
+      } else {
+        // prefix for callback name in global env
+        var prefix = defaultOptions.prefix;
+
+        // unique global callback name in global env
+        this._jsonpCallback = prefix + Date.now();
+      }
+    }
+  }, {
+    key: 'defineGlobalCallback',
+    value: function defineGlobalCallback() {
+      var _this = this;
+
+      /**
+       * 1. Once invoked window[this._jsonpCallback], it will clean timer for limiting
+       *    request period and script element which is used to JSONP.
+       * 2. use arrow function to define `this` object value (Jsonp instance).
+       */
+      return new Promise(function (resolve, reject) {
+        window[_this._jsonpCallback] = function (data) {
+          _this.cleanScript();
+          resolve(data);
+        };
+      });
+    }
+  }, {
+    key: 'generateTimer',
+    value: function generateTimer(options) {
+      var _this2 = this;
+
+      // limit request period
+      var timeout = options.timeout || defaultOptions.timeout;
+
+      // use arrow function to define `this` object value.
+      if (timeout) {
+        this._timer = setTimeout(function () {
+          window[_this2._jsonpCallback] = noop;
+          _this2._timer = null;
+          _this2.cleanScript();
+          throw new Error('JSONP request unsuccessfully (eg.timeout or wrong url).');
+        }, timeout);
+      }
     }
   }, {
     key: 'initState',
     value: function initState(options) {
-      var _this = this;
-
       defineEnumerable(this, '_timer', null);
-      defineEnumerable(this, '_url', null);
-      defineEnumerable(this, '_id', null);
+      defineEnumerable(this, '_request', null);
+      defineEnumerable(this, '_jsonpCallback', null);
       defineEnumerable(this, '_insertScript', null);
       defineEnumerable(this, '_target', null);
 
-      // period of request without timeout error
-      var timeout = options.timeout || 6000;
+      // set this._jsonpCallback
+      this.generateJsonpCallback(options);
 
-      if (options.callbackName) {
-        this._id = options.callbackName;
-        defineEnumerable(this, '_callbackName', this._id);
-      } else {
-        // prefix for callback name in global env
-        var prefix = options.prefix || 'callback';
+      // invoke defineGlobalCallback after setting this._jsonpCallback
+      defineEnumerable(this, '_globalCallback', this.defineGlobalCallback());
 
-        // unique global callback name in global env
-        this._id = prefix + Date.now();
-      }
-
-      /**
-       * 1. Once invoked window[this._id], it will clean timer for limiting
-       *    request period and script element which is used to JSONP.
-       * 2. use arrow function to define `this` object value.
-       */
-      window[this._id] = function (data) {
-        _this.cleanScript();
-        _this._options.callback(data);
-      };
-
-      // timer is used to limit request period.
-      // use arrow function to define `this` object value.
-      if (timeout) {
-        this._timer = setTimeout(function () {
-          window[_this._id] = noop;
-          _this._timer = null;
-          _this.cleanScript();
-          throw new Error('JSONP request unsuccessfully (eg.timeout or wrong url).');
-        }, timeout);
-      }
+      // set timer for limit request time
+      this.generateTimer(options);
     }
   }, {
     key: 'encodeURL',
     value: function encodeURL(url) {
       // name of query parameter to specify the callback name
       // eg. ?callback=...
-      var callbackParams = this._options.callbackParams || 'jsonpCallback';
-      var id = euc(this._id);
+      var callbackParams = this.options.callbackParams || defaultOptions.callbackParams;
+      var id = euc(this._jsonpCallback);
       url += '' + (url.indexOf('?') < 0 ? '?' : '&') + callbackParams + '=' + id;
 
       //  add other parameter to url excluding callback parameter
-      var params = this._options.urlParams || {};
+      var params = this.options.urlParams || defaultOptions.urlParams;
       var keys = Object.keys(params);
       keys.forEach(function (key) {
         var value = params[key] !== undefined ? params[key] : '';
         url += '&' + key + '=' + euc(value);
       });
 
-      this._url = url;
+      this._request = url;
     }
   }, {
     key: 'insertToElement',
@@ -151,7 +167,7 @@ var Jsonp = function () {
         this._insertScript = null;
       }
 
-      window[this._id] = noop;
+      window[this._jsonpCallback] = noop;
 
       if (this._timer) clearTimeout(this._timer);
     }
@@ -159,4 +175,20 @@ var Jsonp = function () {
   return Jsonp;
 }();
 
-module.exports = Jsonp;
+// facade in facade pattern
+// same as axios, zepto
+function createInstance(options) {
+  var jsonp = new Jsonp();
+
+  jsonp.checkOptions(options);
+
+  jsonp.initState(options);
+
+  jsonp.encodeURL(jsonp.options.url);
+
+  jsonp.insertToElement(jsonp._request);
+
+  return jsonp._globalCallback; // from initState(options)
+}
+
+module.exports = createInstance;

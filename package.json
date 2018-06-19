@@ -19,7 +19,7 @@
     "lint": "./node_modules/.bin/eslint --fix --ext .js lib/ samples/ scripts/",
     "release": "sh publish.sh",
     "cleaner": "rm -vrf dist/*",
-    "commit": "git-cz"
+    "commit": "git add . && git-cz"
   },
   "repository": {
     "type": "git",

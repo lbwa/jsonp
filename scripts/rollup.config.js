@@ -17,7 +17,7 @@ const resolve = p => path.resolve(__dirname, '../', p)
 const builds = {
   // be used to link with <script>
   'development': {
-    entry: resolve('lib/index.js'),
+    entry: resolve('lib/jsonp.js'),
     dest: resolve('dist/better-jsonp.js'),
     format: 'umd',
     env: 'development',
@@ -26,7 +26,7 @@ const builds = {
   },
   // be used to link with <script>
   'production': {
-    entry: resolve('lib/index.js'),
+    entry: resolve('lib/jsonp.js'),
     dest: resolve('dist/better-jsonp.min.js'),
     format: 'umd',
     env: 'production',
@@ -41,7 +41,7 @@ const builds = {
   },
   // be used to CommonJS (node, webpack.etc)
   'cjs': {
-    entry: resolve('lib/index.js'),
+    entry: resolve('lib/jsonp.js'),
     dest: resolve('dist/better-jsonp.common.js'),
     format: 'cjs',
     banner,
