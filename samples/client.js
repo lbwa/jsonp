@@ -14,7 +14,7 @@ function fn (data) {
 document.getElementsByClassName('btn')[0].addEventListener('click', () => {
   const jsonp = new Jsonp({
     url,
-    callbackName: 'jp',
+    jsonpCallback: 'jp',
     callbackParams: 'jsonpCallback',
     urlParams: {
       platform: 'yqq',
