@@ -21,18 +21,6 @@ yarn publish --new-version $CURRENT_VERSION
 
 git push --tag
 
-yarn run commit
-
-# read -p "请输入提交至 Git 仓库的 commit 描述信息：" message
-
-# if [ ! -n "$message" ]
-# then
-#   echo "请输入正确的 commit 描述信息！"
-#   exit 2
-# fi
-
-# git add .
-# git commit -m "$message"
-# git push origin master
+# yarn run commit
 
 echo ' <<<<<<<<<< Mission completed >>>>>>>>>> '
