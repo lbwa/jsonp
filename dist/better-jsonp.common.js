@@ -1,6 +1,6 @@
 /*!
- * better-jsonp v0.2.16
- * Copyrights (c) 2018-2018 Bowen (lbwa)
+ * better-jsonp v1.0.0
+ * Copyrights (c) 2018 Bowen (lbwa)
  * Released under the MIT License.
  */
 'use strict';
@@ -59,7 +59,6 @@ var Jsonp = function () {
     key: 'checkOptions',
     value: function checkOptions(options) {
       if (!options.url) throw new Error('Please check your request url.');
-      // if (!options.callback) throw new Error('Please check your callback parameter.')
 
       this.options = options;
     }

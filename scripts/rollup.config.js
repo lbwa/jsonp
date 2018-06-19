@@ -1,14 +1,17 @@
 const path = require('path')
+const chalk = require('chalk')
 const version = process.env.VERSION || require('../package.json').version
 // const alias = require('rollup-plugin-alias')
 const babel = require('rollup-plugin-babel')
 const replace = require('rollup-plugin-replace')
 const { terser } = require('rollup-plugin-terser')
 
+console.log('Package version :', chalk.red(version))
+
 const banner =
   '/*!\n' +
   ' * better-jsonp v' + version + '\n' +
-  ' * Copyrights (c) 2018-' + new Date().getFullYear() + ' Bowen (lbwa)\n' +
+  ' * Copyrights (c) ' + new Date().getFullYear() + ' Bowen (lbwa)\n' +
   ' * Released under the MIT License.\n' +
   ' */'
 
