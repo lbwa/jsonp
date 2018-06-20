@@ -1,4 +1,4 @@
-# Better JSONP [![npm](https://img.shields.io/npm/v/better-jsonp.svg)](https://www.npmjs.com/package/better-jsonp) [![Build Status](https://travis-ci.org/lbwa/jsonp.svg?branch=master)](https://travis-ci.org/lbwa/jsonp)
+# Better JSONP [![npm](https://img.shields.io/npm/v/better-jsonp.svg)](https://www.npmjs.com/package/better-jsonp) [![Build Status](https://travis-ci.org/lbwa/jsonp.svg?branch=master)](https://travis-ci.org/lbwa/jsonp) [![npm](https://img.shields.io/npm/dt/better-jsonp.svg)](https://github.com/lbwa/jsonp)
 
 A minimal JSONP implementation which is used to be a kind of cross domain solution.
 
@@ -22,10 +22,22 @@ yarn add better-jsonp
 ```
 ```html
 <!-- using CDN -->
-<script src="https://cdn.jsdelivr.net/npm/better-jsonp"></script>
+<script src="https://unpkg.com/better-jsonp"></script>
 ```
 
+## Promise polyfill
+
+If you browser doesn't support [ES6 Promise], You should import polyfill to the global environment at the beginning of your application.
+
+```js
+require('es6-promise').polyfill()
+```
+
+[es6 promise]:http://www.ecma-international.org/ecma-262/#sec-promise-objects
+
 ## Usage
+
+JSONP **only** support GET methods, same as `better-JSONP`.
 
 ```js
 jsonp({
@@ -52,3 +64,9 @@ jsonp({
 | `jsonpCallback`  | `String` | false, default : `'callback'+'Date.now()'` | global callback function name which is used to handle JSONP response. |
 | `callbackParams` | `String` | false, default: `jsonpCallback` | name of query parameter to specify the callback name |
 | `urlParams` |  `Object`  | false, default: `{}` | other parameters in query string parameters |
+
+## Notice
+
+- `Uncaught SyntaxError: Unexpected token :`error
+
+It mostly doesn't support JSONP request when you are calling a JSON api. The difference between JSON api and JSONP is that  JSON api response with an object like `{ num: 1 }` (It will throw a error when client executed this response as a function. ). On the other hand, JSONP will respond with a function wrapped object like `jsonpCallback({ num: 1 })` and we will get what we need when client executed this response as a function.
