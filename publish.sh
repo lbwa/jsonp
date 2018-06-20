@@ -2,6 +2,8 @@
 
 set -e
 
+yarn run lint
+
 read -p "升级版本号:
 1. [patch] 修复了 BUG，并向下兼容
 2. [minor] 添加了一些新功能，并向下兼容

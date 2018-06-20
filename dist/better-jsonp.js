@@ -1,6 +1,5 @@
 /*!
- * better-jsonp v1.1.0
- * Copyrights (c) 2018 Bowen (lbwa)
+ * better-jsonp v1.1.0 Copyrights (c) 2018 Bowen (lbwa)
  * Released under the MIT License.
  */
 (function (global, factory) {

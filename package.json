@@ -2,7 +2,7 @@
   "name": "better-jsonp",
   "version": "1.1.0",
   "description": "A simple JSONP implementation",
-  "main": "dist/better-jsonp.common.js",
+  "main": "dist/better-jsonp.js",
   "unpkg": "dist/better-jsonp.js",
   "jsdelivr": "dist/better-jsonp.js",
   "files": [
@@ -11,15 +11,14 @@
   ],
   "scripts": {
     "dev": "node samples/server.js",
-    "build": "yarn run cleaner && yarn run build:prod && yarn run build:dev && yarn run build:common",
+    "build": "yarn run cleaner && yarn run build:prod && yarn run build:dev",
     "build:prod": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:production",
     "build:dev": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:development",
-    "build:common": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:cjs",
     "test": "echo 'Under construction'",
     "lint": "./node_modules/.bin/eslint --fix --ext .js lib/ samples/ scripts/",
     "release": "sh publish.sh",
     "cleaner": "rm -vrf dist/*",
-    "commit": "yarn run build && git add . && git-cz",
+    "commit": "yarn run lint && yarn run build && git add . && git-cz",
     "changelog": "./node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s -v"
   },
   "repository": {

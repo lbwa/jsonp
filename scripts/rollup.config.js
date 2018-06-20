@@ -10,8 +10,7 @@ console.log('Package version :', chalk.red(version))
 
 const banner =
   '/*!\n' +
-  ' * better-jsonp v' + version + '\n' +
-  ' * Copyrights (c) ' + new Date().getFullYear() + ' Bowen (lbwa)\n' +
+  ' * better-jsonp v' + version + ' Copyrights (c) ' + new Date().getFullYear() + ' Bowen (lbwa)\n' +
   ' * Released under the MIT License.\n' +
   ' */'
 
@@ -41,14 +40,6 @@ const builds = {
         }
       })
     ]
-  },
-  // be used to CommonJS (node, webpack.etc)
-  'cjs': {
-    entry: resolve('lib/jsonp.js'),
-    dest: resolve('dist/better-jsonp.common.js'),
-    format: 'cjs',
-    banner,
-    plugins: []
   }
 }
 
@@ -61,7 +52,7 @@ function genConfig (name) {
       format: options.format,
       banner: options.banner,
 
-      // module name in global env. eg. window.JSONP = function () {...}
+      // module name in global env. eg. window.jsonp = function () {...}
       name: options.moduleName || 'jsonp'
     },
     plugins: [
