@@ -154,10 +154,18 @@
     }, {
       key: 'insertToElement',
       value: function insertToElement(url) {
+        var _this3 = this;
+
         this._target = document.getElementsByTagName('script')[0] || document.body.lastElementChild;
 
         this._insertScript = document.createElement('script');
         this._insertScript.src = url;
+
+        // listening 404/500
+        this._insertScript.onerror = function () {
+          _this3.cleanScript();
+          throw new Error('Countdown has been clear! JSONP request unsuccessfully due to 404/500');
+        };
 
         // activate JSONP
         this._target.parentNode.insertBefore(this._insertScript, this._target);

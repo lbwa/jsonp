@@ -57,6 +57,22 @@ const server = http.createServer((request, response) => {
       response.end(zlib.gzipSync(utils))
       break
 
+    case '/normal?jsonpCallback=jp&platform=desktop':
+      response.writeHead(200, {
+        'Content-Type': 'application/javascript',
+        'Content-Encoding': 'gzip'
+      })
+      response.end(zlib.gzipSync(`jp({data: 'Yep! JSONP request Successful!'})`))
+      break
+
+    case '/wrong?jsonpCallback=jp&platform=desktop':
+      response.writeHead(500, {
+        'Content-Type': 'text/html',
+        'Content-Encoding': 'gzip'
+      })
+      response.end()
+      break
+
     default:
       response.writeHead(404, {
         'Content-Type': 'text/html',

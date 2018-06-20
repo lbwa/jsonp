@@ -5,10 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>test page</title>
+  <style>
+    #app {
+      margin: 0 auto;
+      max-width: 980px;
+    }
+    .app-header {
+      text-align: center;
+    }
+    button {
+      margin: 40px 0;
+      display: block;
+    }
+  </style>
 </head>
 <body>
-  <h1>This page is used to test.</h1>
-  <button class="btn">Activate JSONP request</button>
+  <div id="app">
+    <h1 class="app-header">JSONP test</h1>
+    <div class="input-area">
+      <span>Input your request url or use default url:</span>
+      <input type="text" class="input-box" value="/normal">
+    </div>
+    <button class="btn">Activate normal JSONP request</button>
+    <button class="404">Activate 404 response</button>
+    <button class="500">Activate 500 response</button>
+    <p class="des">Tips: You can check your console drawer to find more details.</p>
+  </div>
   <script type="module" src="/jsonp.js"></script>
   <script type="module" src="/client.js"></script>
 </body>

@@ -1,25 +1,42 @@
 import jsonp from './jsonp.js'
 
-const body = document.body
-const url = 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg'
+const $ = document.getElementsByClassName.bind(document)
+const $$ = document.getElementById.bind(document)
+
+const app = $$('app')
+const jsonpBtn = $('btn')[0]
+const wrongRequestBtn = $('404')[0]
+const wrongBtn = $('500')[0]
+const url = $('input-box')[0].value
 
 function fn (data) {
-  console.log('data :', data)
+  console.log('Response data :', data)
 
   const target = document.createElement('p')
   target.innerText = JSON.stringify(data)
-  body.insertBefore(target, body.lastElementChild)
+  app.appendChild(target)
 }
 
-document.getElementsByClassName('btn')[0].addEventListener('click', () => {
+function generateInstance (url) {
   jsonp({
     url,
     jsonpCallback: 'jp',
     callbackParams: 'jsonpCallback',
     urlParams: {
-      platform: 'yqq',
-      needNewCode: 0
+      platform: 'desktop'
     }
   }).then(data => fn(data))
     .catch(err => console.error(err))
+}
+
+jsonpBtn.addEventListener('click', () => {
+  generateInstance(url)
+})
+
+wrongRequestBtn.addEventListener('click', () => {
+  generateInstance('/wrong-request')
+})
+
+wrongBtn.addEventListener('click', () => {
+  generateInstance('/wrong')
 })

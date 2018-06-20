@@ -1,6 +1,6 @@
 # Better JSONP [![npm](https://img.shields.io/npm/v/better-jsonp.svg)](https://www.npmjs.com/package/better-jsonp) [![Build Status](https://travis-ci.org/lbwa/jsonp.svg?branch=master)](https://travis-ci.org/lbwa/jsonp) [![npm](https://img.shields.io/npm/dt/better-jsonp.svg)](https://github.com/lbwa/jsonp)
 
-A minimal JSONP implementation which is used to be a kind of cross domain solution.
+A minimal and lightweight JSONP implementation which is used to be a kind of cross domain solutions.
 
 ## Features
 
@@ -28,17 +28,19 @@ yarn add better-jsonp
 
 ## Promise polyfill
 
-If your browser doesn't support [ES6 Promise], You should import polyfill to the global environment at the beginning of your application.
+If your browser doesn't support [ES6 Promise], you should import polyfill to the global environment at the beginning of your application.
 
 ```js
 require('es6-promise').polyfill()
 ```
 
+***Notice***: Don't assign the result of `polyfill()` to any variable.
+
 [es6 promise]:http://www.ecma-international.org/ecma-262/#sec-promise-objects
 
 ## Usage
 
-JSONP **only** support GET methods, same as `better-JSONP`.
+JSONP ***only*** support GET methods, same as `better-JSONP`.
 
 ```js
 jsonp({
@@ -62,7 +64,7 @@ jsonp({
 | ----------------- | ---- | -------- | ----------- |
 |   `url`  | `String` |           true           | JSONP request address |
 | `timeout` | `Number` | false, default : `6000` | how long after timeout error is emitted. `0` to disable |
-| `jsonpCallback`  | `String` | false, default : `'callback'+'Date.now()'` | global callback function name which is used to handle JSONP response. |
+| `jsonpCallback`  | `String` | false, default : `'callback'+Date.now()` | global callback function name which is used to handle JSONP response. |
 | `callbackParams` | `String` | false, default: `jsonpCallback` | name of query parameter to specify the callback name |
 | `urlParams` |  `Object`  | false, default: `{}` | other parameters in query string parameters |
 
