@@ -1,6 +1,6 @@
 {
   "name": "better-jsonp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple JSONP implementation",
   "main": "dist/better-jsonp.common.js",
   "unpkg": "dist/better-jsonp.js",
@@ -19,7 +19,8 @@
     "lint": "./node_modules/.bin/eslint --fix --ext .js lib/ samples/ scripts/",
     "release": "sh publish.sh",
     "cleaner": "rm -vrf dist/*",
-    "commit": "yarn run build && git add . && git-cz"
+    "commit": "yarn run build && git add . && git-cz",
+    "changelog": "./node_modules/.bin/standard-version"
   },
   "repository": {
     "type": "git",
@@ -54,7 +55,8 @@
     "rollup": "^0.60.7",
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-terser": "^1.0.1"
+    "rollup-plugin-terser": "^1.0.1",
+    "standard-version": "^4.4.0"
   },
   "config": {
     "commitizen": {
