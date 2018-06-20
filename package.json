@@ -20,7 +20,7 @@
     "release": "sh publish.sh",
     "cleaner": "rm -vrf dist/*",
     "commit": "yarn run build && git add . && git-cz",
-    "changelog": "./node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s"
+    "changelog": "./node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s -v"
   },
   "repository": {
     "type": "git",

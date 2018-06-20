@@ -59,11 +59,8 @@
       classCallCheck(this, Jsonp);
 
       this.checkOptions(options);
-
       this.initState(options);
-
       this.encodeURL(options.url);
-
       this.insertToElement(this._request);
     }
 
@@ -99,6 +96,7 @@
          */
         return new Promise(function (resolve, reject) {
           // handle 404/500 in response
+          // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
           _this._insertScript.onerror = function () {
             _this.cleanScript();
             reject(new Error('Countdown has been clear! JSONP request unsuccessfully due to 404/500'));

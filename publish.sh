@@ -19,8 +19,8 @@ CURRENT_VERSION=`node -p "require('./package.json').version"`
 
 yarn publish --new-version $CURRENT_VERSION
 
-git push --tag
+yarn run commit
 
-# yarn run commit
+git push --tag
 
 echo ' <<<<<<<<<< Mission completed >>>>>>>>>> '
