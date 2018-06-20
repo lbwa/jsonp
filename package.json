@@ -19,7 +19,8 @@
     "lint": "./node_modules/.bin/eslint --fix --ext .js lib/ samples/ scripts/",
     "release": "sh publish.sh",
     "cleaner": "rm -vrf dist/*",
-    "commit": "yarn run build && git add . && git-cz"
+    "commit": "yarn run build && git add . && git-cz",
+    "changelog": "./node_modules/.bin/conventional-changelog -p angular -i CHANGELOG.md -s"
   },
   "repository": {
     "type": "git",
@@ -43,6 +44,7 @@
     "babel-preset-env": "^1.7.0",
     "chalk": "^2.4.1",
     "commitizen": "^2.10.1",
+    "conventional-changelog-cli": "^2.0.1",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",

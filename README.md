@@ -23,11 +23,12 @@ yarn add better-jsonp
 ```html
 <!-- using CDN -->
 <script src="https://unpkg.com/better-jsonp"></script>
+<script src="https://cdn.jsdelivr.net/npm/better-jsonp@latest/dist/better-jsonp.min.js"></script>
 ```
 
 ## Promise polyfill
 
-If you browser doesn't support [ES6 Promise], You should import polyfill to the global environment at the beginning of your application.
+If your browser doesn't support [ES6 Promise], You should import polyfill to the global environment at the beginning of your application.
 
 ```js
 require('es6-promise').polyfill()
