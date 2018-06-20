@@ -1,5 +1,5 @@
 /*!
- * better-jsonp v1.0.2
+ * better-jsonp v1.1.0
  * Copyrights (c) 2018 Bowen (lbwa)
  * Released under the MIT License.
  */
@@ -51,20 +51,28 @@ var defaultOptions = {
 };
 
 var Jsonp = function () {
-  function Jsonp() {
+  function Jsonp(options) {
     classCallCheck(this, Jsonp);
+
+    this.checkOptions(options);
+
+    this.initState(options);
+
+    this.encodeURL(options.url);
+
+    this.insertToElement(this._request);
   }
 
   createClass(Jsonp, [{
     key: 'checkOptions',
     value: function checkOptions(options) {
-      if (!options.url) throw new Error('Please check your request url.');
+      if (!options || !options.url) throw new Error('Please check your request url.');
 
       this.options = options;
     }
   }, {
-    key: 'generateJsonpCallback',
-    value: function generateJsonpCallback(options) {
+    key: 'genJsonpCallback',
+    value: function genJsonpCallback(options) {
       if (options.jsonpCallback) {
         this._jsonpCallback = options.jsonpCallback;
       } else {
@@ -86,6 +94,12 @@ var Jsonp = function () {
        * 2. use arrow function to define `this` object value (Jsonp instance).
        */
       return new Promise(function (resolve, reject) {
+        // handle 404/500 in response
+        _this._insertScript.onerror = function () {
+          _this.cleanScript();
+          reject(new Error('Countdown has been clear! JSONP request unsuccessfully due to 404/500'));
+        };
+
         window[_this._jsonpCallback] = function (data) {
           _this.cleanScript();
           resolve(data);
@@ -93,14 +107,14 @@ var Jsonp = function () {
       });
     }
   }, {
-    key: 'generateTimer',
-    value: function generateTimer(options) {
+    key: 'genTimer',
+    value: function genTimer(options) {
       var _this2 = this;
 
       // limit request period
       var timeout = options.timeout || defaultOptions.timeout;
 
-      // use arrow function to define `this` object value.
+      // use arrow function to define `this` object value (Jsonp instance).
       if (timeout) {
         this._timer = setTimeout(function () {
           window[_this2._jsonpCallback] = noop;
@@ -111,6 +125,12 @@ var Jsonp = function () {
       }
     }
   }, {
+    key: 'genScript',
+    value: function genScript() {
+      this._target = document.getElementsByTagName('script')[0] || document.body.lastElementChild;
+      this._insertScript = document.createElement('script');
+    }
+  }, {
     key: 'initState',
     value: function initState(options) {
       defineEnumerable(this, '_timer', null);
@@ -119,14 +139,16 @@ var Jsonp = function () {
       defineEnumerable(this, '_insertScript', null);
       defineEnumerable(this, '_target', null);
 
+      this.genScript();
+
       // set this._jsonpCallback
-      this.generateJsonpCallback(options);
+      this.genJsonpCallback(options);
 
       // invoke defineGlobalCallback after setting this._jsonpCallback
       defineEnumerable(this, '_globalCallback', this.defineGlobalCallback());
 
       // set timer for limit request time
-      this.generateTimer(options);
+      this.genTimer(options);
     }
   }, {
     key: 'encodeURL',
@@ -147,23 +169,13 @@ var Jsonp = function () {
 
       this._request = url;
     }
+
+    // activate JSONP
+
   }, {
     key: 'insertToElement',
     value: function insertToElement(url) {
-      var _this3 = this;
-
-      this._target = document.getElementsByTagName('script')[0] || document.body.lastElementChild;
-
-      this._insertScript = document.createElement('script');
       this._insertScript.src = url;
-
-      // listening 404/500
-      this._insertScript.onerror = function () {
-        _this3.cleanScript();
-        throw new Error('Countdown has been clear! JSONP request unsuccessfully due to 404/500');
-      };
-
-      // activate JSONP
       this._target.parentNode.insertBefore(this._insertScript, this._target);
     }
   }, {
@@ -175,7 +187,6 @@ var Jsonp = function () {
       }
 
       window[this._jsonpCallback] = noop;
-
       if (this._timer) clearTimeout(this._timer);
     }
   }]);
@@ -185,17 +196,10 @@ var Jsonp = function () {
 // facade in facade pattern
 // same as axios, zepto
 function createInstance(options) {
-  var jsonp = new Jsonp();
+  var jsonp = new Jsonp(options);
 
-  jsonp.checkOptions(options);
-
-  jsonp.initState(options);
-
-  jsonp.encodeURL(jsonp.options.url);
-
-  jsonp.insertToElement(jsonp._request);
-
-  return jsonp._globalCallback; // from initState(options)
+  // from initState(options)
+  return jsonp._globalCallback;
 }
 
 module.exports = createInstance;

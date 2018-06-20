@@ -22,8 +22,8 @@ yarn add better-jsonp
 ```
 ```html
 <!-- using CDN -->
-<script src="https://unpkg.com/better-jsonp"></script>
-<script src="https://cdn.jsdelivr.net/npm/better-jsonp@latest/dist/better-jsonp.min.js"></script>
+<script src="https://unpkg.com/better-jsonp@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/better-jsonp@latest"></script>
 ```
 
 ## Promise polyfill
