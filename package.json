@@ -29,7 +29,13 @@
     "jsonp",
     "fetch",
     "front-end",
-    "cross-domain-solution"
+    "cross-domain-solution",
+    "cors",
+    "browser",
+    "promise",
+    "http",
+    "ajax",
+    "es6"
   ],
   "author": "Bowen (lbwa)",
   "license": "MIT",

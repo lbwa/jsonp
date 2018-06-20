@@ -1,15 +1,5 @@
 <a name="1.1.0"></a>
-# [1.1.0](https://github.com/lbwa/jsonp/compare/v1.0.2...v1.1.0) (2018-06-20)
-
-
-### Features
-
-* handle code 404/500 ([346c54a](https://github.com/lbwa/jsonp/commit/346c54a))
-
-
-
-<a name="1.0.2"></a>
-## [1.0.2](https://github.com/lbwa/jsonp/compare/v1.0.1...v1.0.2) (2018-06-19)
+# [1.1.0](https://github.com/lbwa/jsonp/compare/v1.0.0...v1.1.0) (2018-06-20)
 
 
 ### Bug Fixes
@@ -17,9 +7,10 @@
 * fix global variable ([b926279](https://github.com/lbwa/jsonp/commit/b926279))
 
 
+### Features
 
-<a name="1.0.1"></a>
-## [1.0.1](https://github.com/lbwa/jsonp/compare/v1.0.0...v1.0.1) (2018-06-19)
+* **core/Jsonp.js:** handle 404/500 ([346c54a](https://github.com/lbwa/jsonp/commit/346c54a))
+* **lib/core/Jsonp.js:** draft of caught 404/500 ([cb957b2](https://github.com/lbwa/jsonp/commit/cb957b2))
 
 
 
@@ -29,11 +20,12 @@
 
 ### Features
 
-* Support the Promise API([090bbf3](https://github.com/lbwa/jsonp/commit/090bbf3))
+* **lib/core/Jsonp.js lib/json.js samples/ publish:** implement Promise API, deprecate `prefix` ([090bbf3](https://github.com/lbwa/jsonp/commit/090bbf3))
 
 
 ### BREAKING CHANGES
 
-* Support the Promise API
+* **lib/core/Jsonp.js lib/json.js samples/ publish:** implement Promise API, deprecate `prefix` option and `callback` option
 
-* deprecate `prefix` option and `callback` option which has been replaced by Promise API
+
+
