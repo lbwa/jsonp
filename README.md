@@ -6,9 +6,11 @@ A minimal and lightweight JSONP implementation which is used to be a kind of cro
 
 - Implement JSONP request from the browser
 
-- Combine URL query parameters by default
+- Combine URL query parameters by default behavior
 
 - Support the [Promise] API
+
+- Limit JSONP request period
 
 [Promise]:https://promisesaplus.com/
 
@@ -47,7 +49,7 @@ JSONP ***only*** support GET methods, same as `better-JSONP`.
 ```js
 jsonp({
   url: 'http://localhost',
-  // global function named `${jsonpCallback}` will invoked when JSONP response
+  // global function named `${jsonpCallback}` will be invoked when JSONP response
   jsonpCallback: 'jsonp',
   timeout: 5000,
   // eg. ?customCallbackParams=...
