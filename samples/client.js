@@ -1,44 +1,72 @@
 import jsonp from './jsonp.js'
 
 const $ = document.getElementsByClassName.bind(document)
-const $$ = document.getElementById.bind(document)
 const c = document.createElement.bind(document)
 const js = JSON.stringify.bind(JSON)
 
-const app = $$('app')
-const jsonpBtn = $('btn')[0]
+const app = $('card-body')[0]
+const form = $('form-group')[0]
+const jsonpBtn = $('normal')[0]
 const wrongRequestBtn = $('404')[0]
 const wrongBtn = $('500')[0]
 
-function logger (data, isErr) {
+function isError (target) {
+  return Object.prototype.toString.call(target) === '[object Error]'
+}
+
+function logger (data) {
+  const isErr = isError(data)
   const log = isErr ? console.error : console.log
   log('Response data :', data)
+  const dataString = isErr ? data : js(data)
 
   const target = c('p')
-  target.innerText = js(data)
+
+  target.classList.add('alert')
+  target.setAttribute('role', 'alert')
+  if (isErr) {
+    target.innerText = `Request unsuccessfully, Response is ==>"${dataString}"<==`
+  } else {
+    target.innerText = `Request successfully, Response is ==>"${dataString}" by JSON.stringify(data)<==`
+  }
+  const className = isErr ? 'alert-danger' : 'alert-success'
+  target.classList.add(className)
+
   app.appendChild(target)
 }
 
-function generateInstance (url) {
+function generateInstance (options) {
   jsonp({
-    url,
-    jsonpCallback: 'jp',
-    callbackParams: 'jsonpCallback',
-    urlParams: {
-      platform: 'desktop'
-    }
-  }).then(data => logger(data, false))
-    .catch(err => logger(err, true))
+    ...options,
+    jsonpCallback: options.jsonpCallback || 'jsonpCallback'
+  })
+    .then(data => logger(data))
+    .catch(err => logger(err))
 }
 
+function formatData () {
+  const url = $('request-url')[0].value
+  return { url }
+}
+
+function sendForm () {
+  generateInstance(formatData())
+}
+
+form.addEventListener('submit', evt => {
+  form.classList.add('was-validated')
+  sendForm()
+  evt.preventDefault()
+})
+
 jsonpBtn.addEventListener('click', () => {
-  generateInstance($('input-box')[0].value)
+  sendForm()
 })
 
 wrongRequestBtn.addEventListener('click', () => {
-  generateInstance('/wrong-request')
+  generateInstance({url: '/404'})
 })
 
 wrongBtn.addEventListener('click', () => {
-  generateInstance('/wrong')
+  generateInstance({url: '/500'})
 })

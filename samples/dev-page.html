@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap@latest/dist/css/bootstrap.min.css">
+  <title>dev page</title>
+  <style>
+    @media (min-width: 48rem) {
+      .container {
+        margin-top: 100px;
+      }
+    }
+    .alert {
+      margin: 1.25rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1 class="card-header">
+        JSONP request test
+      </h1>
+      <div class="card-body">
+        <form onsubmit="return false;" class="form-group">
+          <label>Request URL</label>
+          <input type="text" class="form-control request-url" id="invalidCheck" value="https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg" placeholder="Request URL, , default url: /normal" required>
+          <div class="invalid-feedback">
+            Please provide a valid request url.
+          </div>
+        </form>
+        <button class="btn btn-outline-info btn-block normal">Activate normal JSONP request</button>
+        <button class="btn btn-outline-info btn-block 404">Activate 404 response by default</button>
+        <button class="btn btn-outline-info btn-block 500">Activate 500 response by default</button>
+        <div class="alert alert-info" role="alert">
+          <span>Tips: You can check your <strong>console drawer</strong> to find more details.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/jsonp.js"></script>
+  <script type="module" src="/client.js"></script>
+</body>
+</html>

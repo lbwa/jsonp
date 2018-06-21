@@ -6,8 +6,17 @@ const chalk = require('chalk')
 const log = console.log
 const PORT = 8899
 
-const server = http.createServer((request, response) => {
-  log(chalk.yellow(`Request url is ${chalk.green(request.url)}`))
+function sendData (statusCode, type, body, res) {
+  res.writeHead(statusCode, {
+    'Content-type': `${type}`,
+    'Content-Encoding': 'gzip'
+  })
+  const response = body ? zlib.gzipSync(body) : ''
+  res.end(response)
+}
+
+const server = http.createServer((req, res) => {
+  log(chalk.yellow(`Request url is ${chalk.green(req.url)}`))
 
   // 以运行 node samples/server.js 的路径为基路径，而不是 server.js 所在路径
   const html = fs.readFileSync('samples/test-page.html')
@@ -15,74 +24,43 @@ const server = http.createServer((request, response) => {
   const client = fs.readFileSync('samples/client.js')
   const core = fs.readFileSync('lib/core/Jsonp.js')
   const utils = fs.readFileSync('lib/utils/index.js')
+  const defaultCallback = `jsonpCallback({data: 'Yep! JSONP request Successful!'})`
 
-  switch (request.url) {
-    case '/':
-      response.writeHead(200, {
-        'Content-Type': 'text/html',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync(html))
+  switch (true) {
+    case /^\/$/.test(req.url):
+      sendData(200, 'text/html', html, res)
       break
 
-    case '/jsonp.js':
-      response.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync(jsonp))
+    case /\/jsonp/.test(req.url):
+      sendData(200, 'application/javascript', jsonp, res)
       break
 
-    case '/client.js':
-      response.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync(client))
+    case /\/client/.test(req.url):
+      sendData(200, 'application/javascript', client, res)
       break
 
-    case '/core/Jsonp':
-      response.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync(core))
+    case /\/core/.test(req.url):
+      sendData(200, 'application/javascript', core, res)
       break
 
-    case '/utils/index.js':
-      response.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync(utils))
+    case /\/utils/.test(req.url):
+      sendData(200, 'application/javascript', utils, res)
       break
 
-    case '/normal?jsonpCallback=jp&platform=desktop':
-      response.writeHead(200, {
-        'Content-Type': 'application/javascript',
-        'Content-Encoding': 'gzip'
-      })
-      response.end(zlib.gzipSync(`jp({data: 'Yep! JSONP request Successful!'})`))
+    case /\/normal/.test(req.url):
+      sendData(200, 'application/javascript', defaultCallback, res)
       break
 
-    case '/wrong?jsonpCallback=jp&platform=desktop':
-      response.writeHead(500, {
-        'Content-Type': 'text/html',
-        'Content-Encoding': 'gzip'
-      })
-      response.end()
+    case /\/500/.test(req.url):
+      sendData(500, 'text/html', null, res)
       break
 
     default:
-      response.writeHead(404, {
-        'Content-Type': 'text/html',
-        'Content-Encoding': 'gzip'
-      })
-      response.end()
+      sendData(404, 'text/html', null, res)
       break
   }
 })
 
 server.listen(PORT)
 
-log(chalk.yellow(`Server listening at port ${chalk.green(PORT)}`))
+log(chalk.yellow(`Server listening at port http://localhost:${chalk.green(PORT)}`))
