@@ -32,6 +32,8 @@ function createInstance(defaultConfig) {
 
   // 指定 Axios 原型方法 request 执行时的 this 指向为 Axios 实例
   // request 方法返回一个 Promise，那么在执行 axios.request 即可得到一个 Promise
+  // axios 所有如同 axios.get 的 request 方法调用都是调用的 axios.request
+  // detail: https://github.com/axios/axios/blob/master/lib/core/Axios.js#L59-L78
   var instance = bind(Axios.prototype.request, context)
 
   // Copy axios.prototype to instance
@@ -40,6 +42,7 @@ function createInstance(defaultConfig) {
   // Copy context to instance
   utils.extend(instance, context)
 
+  // 那么真正向外暴露的是 Axios.prototype.request.bind(new Axios(defaultConfig))
   return instance
 }
 
@@ -58,7 +61,7 @@ function bind (fn, thisArg) {
 }
 ```
 
-如同 `axios` 中一样，以 `facade pattern` 中的 `facade` 对 `Jsonp` 实例进行一次包裹，并据此实现了自定义一个对外接口。不同于 `axios` 直接向外传递 `Axios` 实例，`better-jsonp` 是私有化了真正的 `Jsonp` 的实例。对外接口是 `Jsonp` 实例的一个自有属性（即 `this._globalCallback`），它即是与 `JSONP` 相关的全局回调函数。该接口本身返回一个 `Promise` 对象，那么在全局回调因 `JSONP` 响应后被调用时，就可依据该接口返回的 `Promise` 设置对应的 `Promise API` 回调函数。
+如同 `axios` 中一样，以 `facade pattern` 中的 `facade` 对 `Jsonp` 实例进行一次包裹，并据此实现了自定义一个对外接口。和 `axios` 一样，`better-jsonp` 私有化了真正的 `Jsonp` 的实例。对外接口是 `Jsonp` 实例的一个自有属性（即 `this._globalCallback`），它即是与 `JSONP` 相关的全局回调函数。该接口本身返回一个 `Promise` 对象，那么在全局回调因 `JSONP` 响应后被调用时，就可依据该接口返回的 `Promise` 对象设置对应的 `Promise API` 回调函数。
 
 [facade-pattern]:https://lbwa.github.io/2018/06/12/180612-js-design-pattern/#外观模式
 
