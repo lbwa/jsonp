@@ -6,6 +6,8 @@ A minimal and lightweight JSONP implementation which is used to be a kind of cro
 
 - Implement JSONP request from the browser
 
+- Combine URL query parameters by default
+
 - Support the [Promise] API
 
 [Promise]:https://promisesaplus.com/
