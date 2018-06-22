@@ -5,8 +5,9 @@ const version = process.env.VERSION || require('../package.json').version
 const babel = require('rollup-plugin-babel')
 const replace = require('rollup-plugin-replace')
 const { terser } = require('rollup-plugin-terser')
+const typescript = require('rollup-plugin-typescript2')
 
-console.log('Package version :', chalk.red(version))
+console.log(chalk.red(`Package version :${version}`))
 
 const banner =
   '/*!\n' +
@@ -19,7 +20,7 @@ const resolve = p => path.resolve(__dirname, '../', p)
 const builds = {
   // be used to link with <script>
   'development': {
-    entry: resolve('lib/jsonp.js'),
+    entry: resolve('lib/jsonp.ts'),
     dest: resolve('dist/better-jsonp.js'),
     format: 'umd',
     env: 'development',
@@ -28,7 +29,7 @@ const builds = {
   },
   // be used to link with <script>
   'production': {
-    entry: resolve('lib/jsonp.js'),
+    entry: resolve('lib/jsonp.ts'),
     dest: resolve('dist/better-jsonp.min.js'),
     format: 'umd',
     env: 'production',
@@ -60,6 +61,11 @@ function genConfig (name) {
       // alias({
       //   utils: resolve('lib/utils') // url alias, eg. utils -> ../utils
       // }),
+
+      // keep babel plugin behind typescript plugin
+      typescript({
+        tsconfig: 'tsconfig.json'
+      }),
 
       // convert to lower ES version
       babel({

@@ -1,5 +1,3 @@
-import jsonp from './jsonp.js'
-
 const $ = document.getElementsByClassName.bind(document)
 const c = document.createElement.bind(document)
 const js = JSON.stringify.bind(JSON)
@@ -36,6 +34,7 @@ function logger (data) {
 }
 
 function generateInstance (options) {
+  /* eslint-disable no-undef */
   jsonp({
     ...options,
     jsonpCallback: options.jsonpCallback || 'jsonpCallback'

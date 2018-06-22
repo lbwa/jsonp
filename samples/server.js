@@ -19,11 +19,9 @@ const server = http.createServer((req, res) => {
   log(chalk.yellow(`Request url is ${chalk.green(req.url)}`))
 
   // 以运行 node samples/server.js 的路径为基路径，而不是 server.js 所在路径
-  const html = fs.readFileSync('samples/test-page.html')
-  const jsonp = fs.readFileSync('lib/jsonp.js')
+  const html = fs.readFileSync('samples/dev-page.html')
+  const jsonp = fs.readFileSync('dist/better-jsonp.js')
   const client = fs.readFileSync('samples/client.js')
-  const core = fs.readFileSync('lib/core/Jsonp.js')
-  const utils = fs.readFileSync('lib/utils/index.js')
   const defaultCallback = `jsonpCallback({data: 'Yep! JSONP request Successful!'})`
 
   switch (true) {
@@ -31,20 +29,12 @@ const server = http.createServer((req, res) => {
       sendData(200, 'text/html', html, res)
       break
 
-    case /\/jsonp/.test(req.url):
+    case /better-jsonp/.test(req.url):
       sendData(200, 'application/javascript', jsonp, res)
       break
 
     case /\/client/.test(req.url):
       sendData(200, 'application/javascript', client, res)
-      break
-
-    case /\/core/.test(req.url):
-      sendData(200, 'application/javascript', core, res)
-      break
-
-    case /\/utils/.test(req.url):
-      sendData(200, 'application/javascript', utils, res)
       break
 
     case /\/normal/.test(req.url):
