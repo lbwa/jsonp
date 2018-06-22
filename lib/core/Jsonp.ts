@@ -56,7 +56,7 @@ export default class Jsonp {
         reject(new Error(`Countdown has been clear! JSONP request unsuccessfully due to 404/500`))
       }
 
-      window[this._jsonpCallback] = (data: object) => {
+      (<any>window)[this._jsonpCallback] = (data: object) => {
         this.cleanScript()
         resolve(data)
       }
@@ -70,7 +70,7 @@ export default class Jsonp {
     // use arrow function to define `this` object value (Jsonp instance).
     if (timeout) {
       this._timer = window.setTimeout(() => {
-        window[this._jsonpCallback] = noop
+        (<any>window)[this._jsonpCallback] = noop
         this._timer = 0
         this.cleanScript()
         throw new Error('JSONP request unsuccessfully (eg.timeout or wrong url).')
@@ -121,7 +121,7 @@ export default class Jsonp {
   }
 
   // activate JSONP
-  insertToElement (url) {
+  insertToElement (url: string) {
     this._insertScript.src = url
     this._target.parentNode.insertBefore(this._insertScript, this._target)
   }
@@ -132,7 +132,7 @@ export default class Jsonp {
       this._insertScript = null
     }
 
-    window[this._jsonpCallback] = noop
+    (<any>window)[this._jsonpCallback] = noop
     if (this._timer) window.clearTimeout(this._timer)
   }
 }

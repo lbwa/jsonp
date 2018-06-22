@@ -10,6 +10,7 @@
     "sourceMap": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
+    "noImplicitAny": true
   },
   "include": [
     "./lib/**/*"
