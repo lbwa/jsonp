@@ -10,6 +10,7 @@
     "dist/*.js"
   ],
   "scripts": {
+    "ts": "./node_modules/.bin/tsc",
     "dev": "node samples/server.js",
     "build": "yarn run cleaner && yarn run build:prod && yarn run build:dev",
     "build:prod": "./node_modules/.bin/rollup -c scripts/rollup.config.js --environment TARGET:production",
@@ -61,7 +62,8 @@
     "rollup": "^0.60.7",
     "rollup-plugin-babel": "^3.0.4",
     "rollup-plugin-replace": "^2.0.0",
-    "rollup-plugin-terser": "^1.0.1"
+    "rollup-plugin-terser": "^1.0.1",
+    "typescript": "^2.9.2"
   },
   "config": {
     "commitizen": {

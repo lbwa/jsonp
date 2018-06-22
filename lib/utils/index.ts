@@ -1,6 +1,6 @@
 export function noop () {}
 
-export function defineEnumerable (target, key, value) {
+export function defineEnumerable (target: object, key: string, value: any) {
   Reflect.defineProperty(target, key, {
     enumerable: false,
     writable: true,
@@ -8,6 +8,6 @@ export function defineEnumerable (target, key, value) {
   })
 }
 
-export function euc (value) {
+export function euc (value: string): string {
   return encodeURIComponent(value)
 }

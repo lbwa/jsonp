@@ -1,6 +1,7 @@
+import { defaultOptions, options } from '../types/types.js'
 import { noop, defineEnumerable, euc } from '../utils/index.js'
 
-const defaultOptions = {
+const defaultOptions: defaultOptions = {
   timeout: 6000,
   prefix: 'callback',
   callbackParams: 'jsonpCallback',
@@ -8,20 +9,28 @@ const defaultOptions = {
 }
 
 export default class Jsonp {
-  constructor (options) {
+  options: options
+  _url: string
+  _request: string
+  _jsonpCallback: string
+  _target: Element
+  _insertScript: HTMLScriptElement | null
+  _timer: number
+  _globalCallback: Promise<object>
+  constructor (options: options) {
     this.checkOptions(options)
     this.initState(options)
     this.encodeURL(options.url)
     this.insertToElement(this._request)
   }
 
-  checkOptions (options) {
+  checkOptions (options: options) {
     if (!options || !options.url) throw new Error('Please check your request url.')
 
     this.options = options
   }
 
-  genJsonpCallback (options) {
+  genJsonpCallback (options: options) {
     if (options.jsonpCallback) {
       this._jsonpCallback = options.jsonpCallback
     } else {
@@ -47,22 +56,22 @@ export default class Jsonp {
         reject(new Error(`Countdown has been clear! JSONP request unsuccessfully due to 404/500`))
       }
 
-      window[this._jsonpCallback] = (data) => {
+      window[this._jsonpCallback] = (data: object) => {
         this.cleanScript()
         resolve(data)
       }
     })
   }
 
-  genTimer (options) {
+  genTimer (options: options) {
     // limit request period
     const timeout = options.timeout || defaultOptions.timeout
 
     // use arrow function to define `this` object value (Jsonp instance).
     if (timeout) {
-      this._timer = setTimeout(() => {
+      this._timer = window.setTimeout(() => {
         window[this._jsonpCallback] = noop
-        this._timer = null
+        this._timer = 0
         this.cleanScript()
         throw new Error('JSONP request unsuccessfully (eg.timeout or wrong url).')
       }, timeout)
@@ -74,7 +83,7 @@ export default class Jsonp {
     this._insertScript = document.createElement('script')
   }
 
-  initState (options) {
+  initState (options: options) {
     defineEnumerable(this, '_timer', null)
     defineEnumerable(this, '_request', null)
     defineEnumerable(this, '_jsonpCallback', null)
@@ -93,7 +102,7 @@ export default class Jsonp {
     this.genTimer(options)
   }
 
-  encodeURL (url) {
+  encodeURL (url: string) {
     // name of query parameter to specify the callback name
     // eg. ?callback=...
     const callbackParams = this.options.callbackParams || defaultOptions.callbackParams
@@ -124,6 +133,6 @@ export default class Jsonp {
     }
 
     window[this._jsonpCallback] = noop
-    if (this._timer) clearTimeout(this._timer)
+    if (this._timer) window.clearTimeout(this._timer)
   }
 }
