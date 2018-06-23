@@ -2,6 +2,7 @@ const http = require('http')
 const fs = require('fs')
 const zlib = require('zlib')
 const chalk = require('chalk')
+const execa = require('execa')
 
 const log = console.log
 const PORT = 8899
@@ -14,6 +15,10 @@ function sendData (statusCode, type, body, res) {
   const response = body ? zlib.gzipSync(body) : ''
   res.end(response)
 }
+
+(async function build () {
+  await execa('yarn', ['run', 'build', '--watch'], { stdio: 'inherit' })
+})()
 
 const server = http.createServer((req, res) => {
   log(chalk.yellow(`Request url is ${chalk.green(req.url)}`))
