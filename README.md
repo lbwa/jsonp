@@ -12,6 +12,8 @@ A minimal and lightweight JSONP implementation which is used to be a kind of cro
 
 - Limit JSONP request period
 
+- Handle network error response
+
 [Promise]:https://promisesaplus.com/
 
 ## Install
