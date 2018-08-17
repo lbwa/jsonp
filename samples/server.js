@@ -27,7 +27,7 @@ const server = http.createServer((req, res) => {
   const html = fs.readFileSync('samples/dev-page.html')
   const jsonp = fs.readFileSync('dist/better-jsonp.min.js')
   const client = fs.readFileSync('samples/client.js')
-  const defaultCallback = `jsonpCallback({data: 'Yep! JSONP request Successful!'})`
+  const defaultCallback = `callback({data: 'Yep! JSONP request Successful!'})`
 
   switch (true) {
     case /^\/$/.test(req.url):

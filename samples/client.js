@@ -37,7 +37,7 @@ function generateInstance (options) {
   /* eslint-disable no-undef */
   jsonp({
     ...options,
-    jsonpCallback: options.jsonpCallback || 'jsonpCallback'
+    jsonpCallback: options.jsonpCallback || 'callback'
   })
     .then(data => logger(data))
     .catch(err => logger(err))
@@ -63,9 +63,21 @@ jsonpBtn.addEventListener('click', () => {
 })
 
 wrongRequestBtn.addEventListener('click', () => {
-  generateInstance({url: '/404'})
+  generateInstance({
+    url: '/404',
+    urlParams: {
+      key1: 1,
+      key2: 2
+    }
+  })
 })
 
 wrongBtn.addEventListener('click', () => {
-  generateInstance({url: '/500'})
+  generateInstance({
+    url: '/500',
+    urlParams: {
+      key3: 3,
+      key4: 4
+    }
+  })
 })

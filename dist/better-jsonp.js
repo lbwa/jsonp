@@ -9,59 +9,70 @@
 }(this, (function () { 'use strict';
 
   function noop() {}
-  function defineEnumerable(target, key, value) {
-      Reflect.defineProperty(target, key, {
-          enumerable: false,
-          writable: true,
-          value: value
-      });
-  }
   function euc(value) {
       return encodeURIComponent(value);
   }
 
-  var defaultOptions = {
-      timeout: 6000,
-      prefix: 'callback',
-      callbackParams: 'jsonpCallback',
-      urlParams: {}
-  };
+  var PREFIX = 'callback';
   var Jsonp = /** @class */function () {
-      function Jsonp(options) {
-          this.checkOptions(options);
-          this.initState(options);
-          this.encodeURL(options.url);
-          this.insertToElement(this._request);
+      function Jsonp(_a) {
+          var url = _a.url,
+              _b = _a.timeout,
+              timeout = _b === void 0 ? 6000 : _b,
+              _c = _a.jsonpCallback,
+              jsonpCallback = _c === void 0 ? "" + PREFIX + Date.now() : _c,
+              _d = _a.callbackParams,
+              callbackParams = _d === void 0 ? 'jsonpCallback' : _d,
+              _e = _a.urlParams,
+              urlParams = _e === void 0 ? {} : _e;
+          this.checkOptions({
+              url: url,
+              jsonpCallback: jsonpCallback
+          });
+          this.initState({
+              timeout: timeout,
+              jsonpCallback: jsonpCallback
+          });
+          this.encodeURL({
+              url: url,
+              callbackParams: callbackParams,
+              urlParams: urlParams
+          });
+          this.insert(this._url);
       }
-      Jsonp.prototype.checkOptions = function (options) {
-          if (!options || !options.url) throw new Error('Please check your request url.');
+      Jsonp.prototype.checkOptions = function (_a) {
+          var url = _a.url,
+              jsonpCallback = _a.jsonpCallback;
+          if (!url) throw new Error('Please check your request url.');
           // Every jsonp request will reset global request function named value of
           // jsonpCallback, so this value MUST NOT be `jsonp`.
           // This checking only works in CDN installing, not as a dependency using
-          if (options.jsonpCallback === 'jsonp') throw new Error('Don\'t name jsonpCallback to `jsonp` for unexpected reset. Please use any non-jsonp value');
-          this.options = options;
+          if (jsonpCallback === 'jsonp') throw new Error('Don\'t name jsonpCallback to `jsonp` for unexpected reset. Please use any non-jsonp value');
       };
-      Jsonp.prototype.genJsonpCallback = function (options) {
-          if (options.jsonpCallback) {
-              this._jsonpCallback = options.jsonpCallback;
-          } else {
-              // prefix for callback name in global env
-              var prefix = defaultOptions.prefix;
-              // unique global callback name in global env
-              this._jsonpCallback = prefix + Date.now();
-          }
+      Jsonp.prototype.initState = function (_a) {
+          var timeout = _a.timeout,
+              jsonpCallback = _a.jsonpCallback;
+          this.createScript();
+          // unique response handler
+          this._jsonpCallback = jsonpCallback;
+          // keep behind setting this._jsonpCallback
+          this.handler = this.createHandler();
+          // set timer for limit request time
+          this.createTimer(timeout);
       };
-      Jsonp.prototype.defineGlobalCallback = function () {
+      Jsonp.prototype.createScript = function () {
+          this._reference = document.getElementsByTagName('script')[0] || document.body.lastElementChild;
+          this._script = document.createElement('script');
+      };
+      /**
+       * 1. Request timer will be cleaned when response handler invoked.
+       * 2. use arrow function to keep `this` keywords value (Jsonp instance).
+       */
+      Jsonp.prototype.createHandler = function () {
           var _this = this;
-          /**
-           * 1. Once invoked window[this._jsonpCallback], it will clean timer for limiting
-           *    request period and script element which is used to JSONP.
-           * 2. use arrow function to define `this` object value (Jsonp instance).
-           */
           return new Promise(function (resolve, reject) {
               // handle 404/500 in response
-              // https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
-              _this._insertScript.onerror = function () {
+              _this._script.onerror = function () {
                   _this.cleanScript();
                   reject(new Error("Countdown has been clear! JSONP request unsuccessfully due to 404/500"));
               };
@@ -71,63 +82,46 @@
               };
           });
       };
-      Jsonp.prototype.genTimer = function (options) {
+      // create a request timer for limiting request period
+      Jsonp.prototype.createTimer = function (timeout) {
           var _this = this;
-          // limit request period
-          var timeout = options.timeout || defaultOptions.timeout;
-          // use arrow function to define `this` object value (Jsonp instance).
           if (timeout) {
               this._timer = window.setTimeout(function () {
                   window[_this._jsonpCallback] = noop;
-                  _this._timer = 0;
+                  _this._timer = null;
                   _this.cleanScript();
                   throw new Error('JSONP request unsuccessfully (eg.timeout or wrong url).');
               }, timeout);
           }
       };
-      Jsonp.prototype.genScript = function () {
-          this._target = document.getElementsByTagName('script')[0] || document.body.lastElementChild;
-          this._insertScript = document.createElement('script');
-      };
-      Jsonp.prototype.initState = function (options) {
-          defineEnumerable(this, '_timer', null);
-          defineEnumerable(this, '_request', null);
-          defineEnumerable(this, '_jsonpCallback', null);
-          defineEnumerable(this, '_insertScript', null);
-          defineEnumerable(this, '_target', null);
-          this.genScript();
-          // set this._jsonpCallback
-          this.genJsonpCallback(options);
-          // invoke defineGlobalCallback after setting this._jsonpCallback
-          defineEnumerable(this, '_globalCallback', this.defineGlobalCallback());
-          // set timer for limit request time
-          this.genTimer(options);
-      };
-      Jsonp.prototype.encodeURL = function (url) {
+      Jsonp.prototype.encodeURL = function (_a) {
+          var url = _a.url,
+              callbackParams = _a.callbackParams,
+              urlParams = _a.urlParams;
           // name of query parameter to specify the callback name
           // eg. ?callback=...
-          var callbackParams = this.options.callbackParams || defaultOptions.callbackParams;
           var id = euc(this._jsonpCallback);
           url += "" + (url.indexOf('?') < 0 ? '?' : '&') + callbackParams + "=" + id;
-          //  add other parameter to url excluding callback parameter
-          var params = this.options.urlParams || defaultOptions.urlParams;
-          var keys = Object.keys(params);
+          // add other parameters to url ending excluding callback name parameter
+          var keys = Object.keys(urlParams);
           keys.forEach(function (key) {
-              var value = params[key] !== undefined ? params[key] : '';
+              var value = urlParams[key] !== undefined ? urlParams[key] : '';
               url += "&" + key + "=" + euc(value);
           });
-          this._request = url;
+          // converted request url
+          this._url = url;
       };
       // activate JSONP
-      Jsonp.prototype.insertToElement = function (url) {
-          this._insertScript.src = url;
-          this._target.parentNode.insertBefore(this._insertScript, this._target);
+      Jsonp.prototype.insert = function (url) {
+          this._script.src = url;
+          this._reference.parentNode.insertBefore(this._script, this._reference);
       };
       Jsonp.prototype.cleanScript = function () {
-          if (this._insertScript.parentNode) {
-              this._target.parentNode.removeChild(this._insertScript);
-              this._insertScript = null;
+          if (this._script.parentNode) {
+              this._reference.parentNode.removeChild(this._script);
+              this._script = null;
           }
+          // reset response handler
           window[this._jsonpCallback] = noop;
           if (this._timer) window.clearTimeout(this._timer);
       };
@@ -139,7 +133,7 @@
   function createInstance(options) {
       var jsonp = new Jsonp(options);
       // from initState(options)
-      return jsonp._globalCallback;
+      return jsonp.handler;
   }
 
   return createInstance;

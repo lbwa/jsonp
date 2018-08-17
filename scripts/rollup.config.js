@@ -7,7 +7,7 @@ const replace = require('rollup-plugin-replace')
 const { terser } = require('rollup-plugin-terser')
 const typescript = require('rollup-plugin-typescript2')
 
-console.log(chalk.red(`Package version :${version}`))
+console.log(chalk.red(`\nPackage version :${version}`))
 
 const banner =
   '/*!\n' +
