@@ -51,14 +51,18 @@ require('es6-promise').polyfill()
 
 JSONP ***only*** support GET methods, same as `better-JSONP`.
 
-```js
-// as a dependency
-import jsonp from 'better-jsonp'
+- The code below show you how to use package as a dependency
 
+```js
+// as a request dependency named jsonp
+import jsonp from 'better-jsonp'
+```
+
+```js
 jsonp({
   url: 'http://localhost',
   // global function named `${jsonpCallback}` will be invoked when JSONP response
-  jsonpCallback: 'jsonpCallback', // any non-jsonp value
+  jsonpCallback: 'jsonpCallback', // any different name from request module
   timeout: 5000,
   // eg. ?customCallbackParams=...
   callbackParams: 'customCallbackParams',
@@ -72,7 +76,20 @@ jsonp({
   .catch(err => console.error(err))
 ```
 
-⚠️ ***Notice***: Parameter `jsonpCallback` ***MUST NOT*** be `'jsonp'`, otherwise `jsonp` module only work once and function named value of parameter `jsonpCallback` will be reset to `null` which means global function `jsonp` will be reset unexpectedly.
+⚠️ ***Notice***: Parameter `jsonpCallback` value ***MUST NOT*** be same as request module name (eg. dependency named `jsonp` above code), otherwise request module only works once and function named value of parameter `jsonpCallback` will be reset to `null` (internal implementation) which means the same name request module will be also reset unexpectedly.
+
+- You can also invoke function named `jsonp` directly in global environment if you have installed package from CDN.
+
+```js
+jsonp({
+  // custom configuration
+})
+```
+
+⚠️ ***Notice***: For same reason, parameter `jsonpCallback` value ***MUST NOT*** be `jsonp`.
+
+
+## Parameters
 
 | options parameter | type | required | description |
 | ----------------- | ---- | -------- | ----------- |
@@ -82,7 +99,7 @@ jsonp({
 | `callbackParams` | `String` | false, default: `jsonpCallback` | name of query parameter to specify the callback name |
 | `urlParams` |  `Object`  | false, default: `{}` | other parameters in query string parameters |
 
-## Notice
+## Notice ⚠️
 
 - `Uncaught SyntaxError: Unexpected token :`error
 
