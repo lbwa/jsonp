@@ -29,6 +29,8 @@ export default class Jsonp {
 
     // Every jsonp request will reset global request function named value of
     // jsonpCallback, so this value MUST NOT be `jsonp`.
+
+    // This checking only works in CDN installing, not as a dependency using
     if (options.jsonpCallback === 'jsonp') throw new Error('Don\'t name jsonpCallback to `jsonp` for unexpected reset. Please use any non-jsonp value')
 
     this.options = options
