@@ -37,7 +37,7 @@ function generateInstance (options) {
   /* eslint-disable no-undef */
   jsonp({
     ...options,
-    jsonpCallback: options.jsonpCallback || 'callback'
+    jsonpCallback: options.jsonpCallback
   })
     .then(data => logger(data))
     .catch(err => logger(err))
@@ -45,7 +45,16 @@ function generateInstance (options) {
 
 function formatData () {
   const url = $('request-url')[0].value
-  return { url }
+  return {
+    url,
+    timeout: 5000,
+    jsonpCallback: 'betterjsonp',
+    callbackParams: 'callback',
+    urlParams: {
+      key0: 0,
+      key1: 1
+    }
+  }
 }
 
 function sendForm () {

@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
   // 以运行 node docs/server.js 的路径为基路径，而不是 server.js 所在路径
   const html = fs.readFileSync('docs/dev-page.html')
   const jsonp = fs.readFileSync('dist/better-jsonp.min.js')
-  const client = fs.readFileSync('docs/client.js')
+  const client = fs.readFileSync('docs/index.js')
   const defaultCallback = `callback({data: 'Yep! JSONP request Successful!'})`
 
   switch (true) {
