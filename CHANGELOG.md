@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/lbwa/jsonp/compare/v1.1.0...v1.1.1) (2018-08-17)
+
+
+### Bug Fixes
+
+* avoid global function named jsonp to reset unexpectedly ([98bf8a6](https://github.com/lbwa/jsonp/commit/98bf8a6))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/lbwa/jsonp/compare/v1.0.0...v1.1.0) (2018-06-20)
 
@@ -20,12 +30,12 @@
 
 ### Features
 
-* **lib/core/Jsonp.js lib/json.js samples/ publish:** implement Promise API, deprecate `prefix` ([090bbf3](https://github.com/lbwa/jsonp/commit/090bbf3))
+* **lib/core/Jsonp.js lib/json.js samples/* publish.sh:** implement Promise API, deprecate `prefix` ([090bbf3](https://github.com/lbwa/jsonp/commit/090bbf3))
 
 
 ### BREAKING CHANGES
 
-* **lib/core/Jsonp.js lib/json.js samples/ publish:** implement Promise API, deprecate `prefix` option and `callback` option
+* **lib/core/Jsonp.js lib/json.js samples/* publish.sh:** implement Promise API, deprecate `prefix` option and `callback` option
 
 
 
