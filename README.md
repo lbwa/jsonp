@@ -61,8 +61,8 @@ import jsonp from 'better-jsonp'
 ```js
 jsonp({
   url: 'http://localhost',
-  // global function named `${jsonpCallback}` will be invoked when JSONP response
-  jsonpCallback: 'jsonpCallback', // any different name from request module
+  // global function named `callback` will be invoked when JSONP response
+  jsonpCallback: 'callback', // any different name from request module
   timeout: 5000,
   // eg. ?customCallbackParams=...
   callbackParams: 'customCallbackParams',
@@ -94,7 +94,7 @@ jsonp({
 | options parameter | type | required | description |
 | ----------------- | ---- | -------- | ----------- |
 |   `url`  | `String` |           true           | JSONP request address |
-| `timeout` | `Number` | false, default : `6000` | how long after timeout error is emitted. `0` to disable |
+| `timeout` | `Number` | false, default : `6000` milliseconds | how long after timeout error is emitted. `0` to disable |
 | `jsonpCallback`  | `String` | false, default : `'callback'+Date.now()` | global callback function name which is used to handle JSONP response. |
 | `callbackParams` | `String` | false, default: `jsonpCallback` | name of query parameter to specify the callback name |
 | `urlParams` |  `Object`  | false, default: `{}` | other parameters in query string parameters |

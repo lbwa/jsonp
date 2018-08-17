@@ -94,6 +94,7 @@ export default class Jsonp {
 
   // create a request timer for limiting request period
   createTimer (timeout: options['timeout']) {
+    // It can be disable when param timeout equal falsy value (0, null etc.)
     if (timeout) {
       this._timer = window.setTimeout(() => {
         (<any>window)[this._jsonpCallback] = noop
