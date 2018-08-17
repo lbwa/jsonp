@@ -2,7 +2,7 @@
   "name": "better-jsonp",
   "version": "1.1.0",
   "description": "A simple JSONP implementation",
-  "main": "dist/better-jsonp.js",
+  "main": "dist/better-jsonp.min.js",
   "unpkg": "dist/better-jsonp.js",
   "jsdelivr": "dist/better-jsonp.js",
   "files": [
@@ -17,7 +17,7 @@
     "build:dev": "npx rollup -c scripts/rollup.config.js --environment TARGET:development",
     "test": "echo 'Under construction'",
     "lint": "npx eslint --fix --ext .js lib/ samples/ scripts/",
-    "release": "sh publish.sh",
+    "release": "sh scripts/release.sh",
     "cleaner": "rm -vrf dist/*",
     "commit": "yarn run lint && yarn run build && git add . && git-cz",
     "changelog": "npx conventional-changelog -p angular -i CHANGELOG.md -s -v"

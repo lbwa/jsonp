@@ -22,12 +22,15 @@ A minimal and lightweight JSONP implementation which is used to be a kind of cro
 # using npm
 npm i better-jsonp
 ```
+
 ```bash
 # using yarn
 yarn add better-jsonp
 ```
+
 ```html
 <!-- using CDN -->
+<!-- recommend you to add version number to url ending. eg.https://unpkg.com/better-jsonp@x.y.z -->
 <script src="https://unpkg.com/better-jsonp@latest"></script>
 <script src="https://cdn.jsdelivr.net/npm/better-jsonp@latest"></script>
 ```
@@ -49,10 +52,13 @@ require('es6-promise').polyfill()
 JSONP ***only*** support GET methods, same as `better-JSONP`.
 
 ```js
+// as a dependency
+import jsonp from 'better-jsonp'
+
 jsonp({
   url: 'http://localhost',
   // global function named `${jsonpCallback}` will be invoked when JSONP response
-  jsonpCallback: 'jsonp',
+  jsonpCallback: 'jsonpCallback', // any non-jsonp value
   timeout: 5000,
   // eg. ?customCallbackParams=...
   callbackParams: 'customCallbackParams',
@@ -65,6 +71,8 @@ jsonp({
   .then(res => console.log(res))
   .catch(err => console.error(err))
 ```
+
+⚠️ ***Notice***: Parameter `jsonpCallback` ***MUST NOT*** be `'jsonp'`, otherwise `jsonp` module only work once and function named value of parameter `jsonpCallback` will be reset to `null` which means global function `jsonp` will be reset unexpectedly.
 
 | options parameter | type | required | description |
 | ----------------- | ---- | -------- | ----------- |

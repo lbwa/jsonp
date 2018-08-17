@@ -27,6 +27,10 @@ export default class Jsonp {
   checkOptions (options: options) {
     if (!options || !options.url) throw new Error('Please check your request url.')
 
+    // Every jsonp request will reset global request function named value of
+    // jsonpCallback, so this value MUST NOT be `jsonp`.
+    if (options.jsonpCallback === 'jsonp') throw new Error('Don\'t name jsonpCallback to `jsonp` for unexpected reset. Please use any non-jsonp value')
+
     this.options = options
   }
 
