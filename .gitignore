@@ -1,3 +1,4 @@
 node_modules
 *.log
+dist
 .rpt2_cache
