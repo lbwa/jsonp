@@ -1,3 +1,13 @@
+<a name="1.1.2"></a>
+## [1.1.2](https://github.com/lbwa/jsonp/compare/v1.1.1...v1.1.2) (2018-08-17)
+
+
+### Bug Fixes
+
+* **core:** remove unnecessary code for reduce code weight ([90bb90a](https://github.com/lbwa/jsonp/commit/90bb90a))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/lbwa/jsonp/compare/v1.1.0...v1.1.1) (2018-08-17)
 
