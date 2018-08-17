@@ -2,8 +2,6 @@
 
 set -e
 
-yarn build
-
 echo "Select a option to release (input a serial number)："
 echo
 
@@ -27,6 +25,9 @@ select VERSION in patch minor major "Specific Version"
         npm version $VERSION
         NEW_VERSION=$(node -p "require('./package.json').version")
         echo Releasing ${NEW_VERSION} ...
+
+        # get new version number
+        yarn build
 
         yarn publish --new-version ${NEW_VERSION}
         echo "✅  Released to npm."

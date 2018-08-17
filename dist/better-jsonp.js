@@ -1,5 +1,5 @@
 /*!
- * better-jsonp v1.1.0 Copyrights (c) 2018 Bowen (lbwa)
+ * better-jsonp v1.1.1 Copyrights (c) 2018 Bowen (lbwa)
  * Released under the MIT License.
  */
 (function (global, factory) {
@@ -37,6 +37,7 @@
           if (!options || !options.url) throw new Error('Please check your request url.');
           // Every jsonp request will reset global request function named value of
           // jsonpCallback, so this value MUST NOT be `jsonp`.
+          // This checking only works in CDN installing, not as a dependency using
           if (options.jsonpCallback === 'jsonp') throw new Error('Don\'t name jsonpCallback to `jsonp` for unexpected reset. Please use any non-jsonp value');
           this.options = options;
       };
