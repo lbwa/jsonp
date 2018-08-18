@@ -86,7 +86,9 @@ jsonp({
 
 ⚠️ ***Notice***: Parameter `jsonpCallback` value ***MUST NOT*** be same as request module name (eg. dependency named `jsonp` above code), otherwise request module only works once and function named value of parameter `jsonpCallback` will be reset to `null` (internal implementation) which means the same name request module will be also reset unexpectedly.
 
-- You can also invoke function named `jsonp` directly in global environment if you have installed package from CDN.
+> For more customization capability, This package wouldn't convert `jsonpCallback` to a new name to prevent unexpected reset.
+
+- You can also invoke function named `jsonp` directly in global environment if you have installed package from CDN.（[Play on the playground]）
 
 ```js
 jsonp({
