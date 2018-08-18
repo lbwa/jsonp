@@ -19,7 +19,7 @@
     "lint": "npx eslint --fix --ext .js lib/ docs/ scripts/",
     "release": "sh scripts/release.sh",
     "cleaner": "rm -vrf dist/*",
-    "commit": "yarn run lint && yarn run build && git add . && git-cz",
+    "commit": "yarn run lint && git add . && git-cz",
     "changelog": "npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "repository": {
