@@ -1,12 +1,11 @@
-const $ = document.getElementsByClassName.bind(document)
+const $ = document.querySelector.bind(document)
 const c = document.createElement.bind(document)
 const js = JSON.stringify.bind(JSON)
 
-const app = $('card-body')[0]
-const form = $('form-group')[0]
-const jsonpBtn = $('normal')[0]
-const wrongRequestBtn = $('404')[0]
-const wrongBtn = $('500')[0]
+const app = $('.card-body')
+const form = $('.form-group')
+const jsonpBtn = $('.normal')
+const wrongRequestBtn = $('.not-found')
 
 function isError (target) {
   return Object.prototype.toString.call(target) === '[object Error]'
@@ -15,18 +14,18 @@ function isError (target) {
 function logger (data) {
   const isErr = isError(data)
   const log = isErr ? console.error : console.log
-  log('Response data :', data)
+  log('[Response data]:', data)
   const dataString = isErr ? data : js(data)
 
   const target = c('p')
 
   target.classList.add('alert')
   target.setAttribute('role', 'alert')
-  if (isErr) {
-    target.innerText = `Request unsuccessfully, Response is ==>"${dataString}"<==`
-  } else {
-    target.innerText = `Request successfully, Response is ==>"${dataString}" by JSON.stringify(data)<==`
-  }
+
+  target.innerHTML = isErr
+    ? `Handle error, <strong>"${dataString}"</strong>`
+    : `Request <strong>successfully</strong>, Response is <strong>${dataString} </strong>`
+
   const className = isErr ? 'alert-danger' : 'alert-success'
   target.classList.add(className)
 
@@ -44,49 +43,36 @@ function generateInstance (options) {
 }
 
 function formatData () {
-  const url = $('request-url')[0].value
+  const url = $('#request-url').value
+  const timeout = $('#timeout').value
+  const jsonpCallback = $('#jsonp-callback').value === 'jsonp'
+    ? 'jsonpCallback'
+    : $('#jsonp-callback').value
+  const callbackParams = $('#callback-params').value
   return {
     url,
-    timeout: 5000,
-    jsonpCallback: 'betterjsonp',
-    callbackParams: 'callback',
+    timeout,
+    jsonpCallback,
+    callbackParams,
     urlParams: {
-      key0: 0,
-      key1: 1
+      urlParams1: 'value 1',
+      urlParams2: 'value 2'
     }
   }
 }
 
-function sendForm () {
-  generateInstance(formatData())
-}
-
 form.addEventListener('submit', evt => {
   form.classList.add('was-validated')
-  sendForm()
+  generateInstance(formatData())
   evt.preventDefault()
 })
 
 jsonpBtn.addEventListener('click', () => {
-  sendForm()
+  generateInstance(formatData())
 })
 
 wrongRequestBtn.addEventListener('click', () => {
   generateInstance({
-    url: '/404',
-    urlParams: {
-      key1: 1,
-      key2: 2
-    }
-  })
-})
-
-wrongBtn.addEventListener('click', () => {
-  generateInstance({
-    url: '/500',
-    urlParams: {
-      key3: 3,
-      key4: 4
-    }
+    url: '/404'
   })
 })

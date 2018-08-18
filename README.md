@@ -2,6 +2,14 @@
 
 A minimal and lightweight JSONP implementation which is used to be a kind of cross domain solutions.
 
+- [Play on the playground]
+
+- [See demo page]
+
+[Play on the playground]:https://lbwa.github.io/jsonp/
+
+[See demo page]:https://jsfiddle.net/608oagxd/8/
+
 ## Features
 
 - Implement JSONP request from the browser

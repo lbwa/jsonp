@@ -17,7 +17,7 @@ function sendData (statusCode, type, body, res) {
 }
 
 (async function build () {
-  await execa('yarn', ['run', 'build', '--watch'], { stdio: 'inherit' })
+  await execa('yarn', ['run', 'build:dev', '--watch'], { stdio: 'inherit' })
 })()
 
 const server = http.createServer((req, res) => {
@@ -27,7 +27,6 @@ const server = http.createServer((req, res) => {
   const html = fs.readFileSync('docs/dev-page.html')
   const jsonp = fs.readFileSync('dist/better-jsonp.min.js')
   const client = fs.readFileSync('docs/index.js')
-  const defaultCallback = `callback({data: 'Yep! JSONP request Successful!'})`
 
   switch (true) {
     case /^\/$/.test(req.url):
@@ -38,12 +37,8 @@ const server = http.createServer((req, res) => {
       sendData(200, 'application/javascript', jsonp, res)
       break
 
-    case /\/client/.test(req.url):
+    case /\/index/.test(req.url):
       sendData(200, 'application/javascript', client, res)
-      break
-
-    case /\/normal/.test(req.url):
-      sendData(200, 'application/javascript', defaultCallback, res)
       break
 
     case /\/500/.test(req.url):
