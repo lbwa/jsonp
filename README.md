@@ -109,7 +109,7 @@ jsonp({
 | `callbackParams` | `String` | false, default: `jsonpCallback` | name of query parameter to specify the callback name |
 | `urlParams` |  `Object`  | false, default: `{}` | other parameters in query string parameters |
 
-## Notice ⚠️
+## Notice
 
 - `Uncaught SyntaxError: Unexpected token :`error
 
