@@ -134,7 +134,7 @@ export default class Jsonp {
 
   cleanScript () {
     if (this._script.parentNode) {
-      this._reference.parentNode.removeChild(this._script)
+      this._script.parentNode.removeChild(this._script)
       this._script = null
     }
 
