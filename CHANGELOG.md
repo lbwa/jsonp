@@ -1,3 +1,14 @@
+<a name="1.1.3"></a>
+## [1.1.3](https://github.com/lbwa/jsonp/compare/v1.1.2...v1.1.3) (2020-01-26)
+
+
+### Bug Fixes
+
+* manage global timer ([c7a277d](https://github.com/lbwa/jsonp/commit/c7a277d))
+* Remove script from it's parentNode instead of _reference ([#2](https://github.com/lbwa/jsonp/issues/2)) ([fbdfcf5](https://github.com/lbwa/jsonp/commit/fbdfcf5))
+
+
+
 <a name="1.1.2"></a>
 ## [1.1.2](https://github.com/lbwa/jsonp/compare/v1.1.1...v1.1.2) (2018-08-17)
 
