@@ -1,5 +1,5 @@
 import { options } from '../utils/types'
-import { noop, euc } from '../utils/index'
+import { noop } from '../utils/index'
 
 const PREFIX = 'callback'
 
@@ -10,9 +10,9 @@ export default class Jsonp {
   private _jsonpCallback: string // response handler
   private _reference: Element // reference element
   private _script: HTMLScriptElement | null // trigger element
-  private _timer: number // timer ID
+  private _timer: number
 
-  constructor ({
+  constructor({
     url,
     timeout = 6000,
     jsonpCallback = `${PREFIX}${Date.now()}`,
@@ -23,32 +23,32 @@ export default class Jsonp {
       url,
       jsonpCallback
     })
-    this.initState({
-      timeout,
-      jsonpCallback
-    })
     this.encodeURL({
       url,
       callbackParams,
       urlParams
     })
+    this.initState({
+      timeout,
+      jsonpCallback
+    })
     this.insert(this._url)
   }
 
-  checkOptions ({
-    url,
-    jsonpCallback
-  }: options) {
+  checkOptions({ url, jsonpCallback }: options) {
     if (!url) throw new Error('Please check your request url.')
 
     // Every jsonp request will reset global request function named value of
     // jsonpCallback, so this value MUST NOT be `jsonp`.
 
     // This checking only works in CDN installing, not as a dependency using
-    if (jsonpCallback === 'jsonp') throw new Error('Don\'t name jsonpCallback to `jsonp` for unexpected reset. Please use any non-jsonp value')
+    if (jsonpCallback === 'jsonp')
+      throw new Error(
+        "Don't name jsonpCallback to `jsonp` for unexpected reset. Please use any non-jsonp value"
+      )
   }
 
-  initState ({
+  initState({
     timeout,
     jsonpCallback
   }: {
@@ -67,9 +67,10 @@ export default class Jsonp {
     this.createTimer(timeout)
   }
 
-  createScript () {
-    this._reference = document.getElementsByTagName('script')[0]
-      || document.body.lastElementChild
+  createScript() {
+    this._reference =
+      document.getElementsByTagName('script')[0] ||
+      document.body.lastElementChild
     this._script = document.createElement('script')
   }
 
@@ -77,15 +78,23 @@ export default class Jsonp {
    * 1. Request timer will be cleaned when response handler invoked.
    * 2. use arrow function to keep `this` keywords value (Jsonp instance).
    */
-  createHandler () {
-    return new Promise((resolve, reject) => {
+  createHandler() {
+    return new Promise<object>((resolve, reject) => {
       // handle 404/500 in response
       this._script.onerror = () => {
         this.cleanScript()
-        reject(new Error(`Countdown has been clear! JSONP request unsuccessfully due to 404/500`))
+        // clear timer
+        if (this._timer) {
+          window.clearTimeout(this._timer)
+          this._timer = null
+        }
+        reject(
+          new Error(
+            `[SCRIPT ONERROR]: JSONP request unsuccessfully due to 404/500`
+          )
+        )
       }
-
-      (<any>window)[this._jsonpCallback] = (data: object) => {
+      ;(window as any)[this._jsonpCallback] = (data: object) => {
         this.cleanScript()
         resolve(data)
       }
@@ -93,33 +102,32 @@ export default class Jsonp {
   }
 
   // create a request timer for limiting request period
-  createTimer (timeout: options['timeout']) {
+  createTimer(timeout: options['timeout']) {
     // It can be disable when param timeout equal falsy value (0, null etc.)
     if (timeout) {
-      this._timer = window.setTimeout(() => {
-        (<any>window)[this._jsonpCallback] = noop
-        this._timer = null
+      const id = window.setTimeout(() => {
+        ;(window as any)[this._jsonpCallback] = noop
         this.cleanScript()
-        throw new Error('JSONP request unsuccessfully (eg.timeout or wrong url).')
+        this._timer = null
+        throw new Error(
+          '[TIMEOUT]: JSONP request unsuccessfully (eg.timeout or wrong url).'
+        )
       }, timeout)
+      this._timer = id
     }
   }
 
-  encodeURL ({
-    url,
-    callbackParams,
-    urlParams
-  }: options) {
+  encodeURL({ url, callbackParams, urlParams }: options) {
     // name of query parameter to specify the callback name
     // eg. ?callback=...
-    const id = euc(this._jsonpCallback)
+    const id = encodeURIComponent(this._jsonpCallback)
     url += `${url.indexOf('?') < 0 ? '?' : '&'}${callbackParams}=${id}`
 
     // add other parameters to url ending excluding callback name parameter
     const keys = Object.keys(urlParams)
     keys.forEach(key => {
       const value = urlParams[key] !== undefined ? urlParams[key] : ''
-      url += `&${key}=${euc(value)}`
+      url += `&${key}=${encodeURIComponent(value)}`
     })
 
     // converted request url
@@ -127,19 +135,18 @@ export default class Jsonp {
   }
 
   // activate JSONP
-  insert (url: string) {
+  insert(url: string) {
     this._script.src = url
     this._reference.parentNode.insertBefore(this._script, this._reference)
   }
 
-  cleanScript () {
-    if (this._script.parentNode) {
+  cleanScript() {
+    if (this._script && this._script.parentNode) {
       this._script.parentNode.removeChild(this._script)
       this._script = null
     }
 
     // reset response handler
-    (<any>window)[this._jsonpCallback] = noop
-    if (this._timer) window.clearTimeout(this._timer)
+    ;(window as any)[this._jsonpCallback] = noop
   }
 }

@@ -7,7 +7,7 @@ const execa = require('execa')
 const log = console.log
 const PORT = 8899
 
-function sendData (statusCode, type, body, res) {
+function sendData(statusCode, type, body, res) {
   res.writeHead(statusCode, {
     'Content-type': `${type}`,
     'Content-Encoding': 'gzip'
@@ -16,7 +16,7 @@ function sendData (statusCode, type, body, res) {
   res.end(response)
 }
 
-(async function build () {
+;(async function build() {
   await execa('yarn', ['run', 'build:dev', '--watch'], { stdio: 'inherit' })
 })()
 
@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
 
   // 以运行 node docs/server.js 的路径为基路径，而不是 server.js 所在路径
   const html = fs.readFileSync('docs/dev-page.html')
-  const jsonp = fs.readFileSync('dist/better-jsonp.min.js')
+  const jsonp = fs.readFileSync('dist/better-jsonp.js')
   const client = fs.readFileSync('docs/index.js')
 
   switch (true) {
@@ -53,4 +53,6 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT)
 
-log(chalk.yellow(`Server listening at port http://localhost:${chalk.green(PORT)}`))
+log(
+  chalk.yellow(`Server listening at port http://localhost:${chalk.green(PORT)}`)
+)
