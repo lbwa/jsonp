@@ -23,14 +23,14 @@ export default class Jsonp {
       url,
       jsonpCallback
     })
+    this.initState({
+      timeout,
+      jsonpCallback
+    })
     this.encodeURL({
       url,
       callbackParams,
       urlParams
-    })
-    this.initState({
-      timeout,
-      jsonpCallback
     })
     this.insert(this._url)
   }
